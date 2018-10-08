@@ -3,23 +3,20 @@
 
 #include "list.hpp"
 
-struct song {
+struct Song {
     char * title;
     float length;
     int views, likes;
-}
+};
 
-struct artist {
-    artist(char const * filename);
-    ~artist();
+struct Artist {
+    Artist(char * name, char * description, char * top_story)
+        : name(name), description(description), top_story(top_story){};
     
-    void addSong(song s);
-    void editSong(char const * name, int likes, int views);
-    void cull(int minimum_views);
 
 private:
-    char *name, *topStory, *description;
-    list songs;
-}
+    char *name, *top_story, *description;
+    List<Song> songs;
+};
 
 #endif

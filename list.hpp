@@ -1,23 +1,33 @@
 #ifndef LIST_HPP
 #define LIST_HPP
-struct node{ //Template-abstractly representing all nodes
-	song data; //Field inside node of type T 
-	node* next; //Next is a field of type node ptr
+#include <iostream>
+template <typename T> struct Node{
+    //reference to the field data, which is set to the parameter data; 
+    //reference to the field next, which is set to nullptr
+    Node(T data) : data(data), next(nullptr) {} //takes value
+    Node(T data, Node<T>* next ) : data(data), next(next) {} //initializes value and the next pointer
+    T * find(T const& rhs);
+    
+
+	T data; //Field inside node 
+	Node<T> * next; //Next is a field of type node ptr
 };//struct 	
 
-struct list{
-public:
-	list();
-	~list();
+template <typename T> struct List{
+	List();
+	~List();
 
-	void addInsert(song s);			
+    void push_front(T data); 
 
+	void insert_sort(T data);			
 
-	friend std::ostream& operator<<(std::ostream& out, LinkedList& list);
+    //Use pointer to return NULL if not found. 
+    T * find(T const& rhs);//pass in rhs and do not modify
+
+    template<typename U>
+	friend std::ostream& operator<<(std::ostream& out, List<U>& list);
 private:
-	node * head;
-	node * curr;
-	node * temp;
+	Node<T> * head;
 };
 #endif
 
