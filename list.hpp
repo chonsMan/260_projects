@@ -1,15 +1,19 @@
+//**********************************************************************//
+//File: list.cpp
+//Purpose: This file contains functions that are used to add data, find
+//         data and sort data. 
+//**********************************************************************//
 #ifndef LIST_HPP
 #define LIST_HPP
 #include <iostream>
 template <typename T> struct Node{
-    //reference to the field data, which is set to the parameter data; 
-    //reference to the field next, which is set to nullptr
+    //Reference to the field data, which is set to the parameter data. 
+    //Reference to the field next, which is set to nullptr.
     Node(T data) : data(data), next(nullptr) {} //takes value
     Node(T data, Node<T>* next ) : data(data), next(next) {} //initializes value and the next pointer
     T * find(T const& rhs);
     
-
-	T data; //Field inside node 
+	T data; //Data field inside node 
 	Node<T> * next; //Next is a field of type node ptr
 };//struct 	
 
