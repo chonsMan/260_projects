@@ -16,11 +16,11 @@
 //          artists.
 //**********************************************************************//
 bool Label::add_artist(
-    char * name, 
-    char * description, 
-    char * top_story
+    char const * artist_name, 
+    char const * description, 
+    char const * top_story
 ) {
-    Artist artist = Artist {name, description, top_story};
+    Artist artist = Artist {artist_name, description, top_story};
     if(artists.find(artist)) return false;//if find function does not return NULL; return false.
     artists.push_front(artist);
     return true; //we did add an artist
@@ -35,12 +35,14 @@ bool Label::add_artist(
 //Purpose:  This function updates the number of views and likes.
 //**********************************************************************//
 bool Label::update_song(
-    char const* artist, 
-    char const * name, 
+    char const * artist_name, 
+    char const * song_title, 
     int likes, 
     int views
 ) {
-
+    Artist* artist = artists.find(Artist{ artist_name, nullptr, nullptr });
+    if (artist == nullptr) return false;
+    return artist->update_song(song_title, likes, views);//return success
 }
 
 
@@ -64,8 +66,8 @@ void Label::cull(int minimum_views){
 //Purpose:  To add a new song to the list.
 //**********************************************************************//
 bool Label::add_song(
-        char * artist,    
-        char * name,
+        char const * artist_name,    
+        char const * song_name,
         float length,
         int likes,
         int views

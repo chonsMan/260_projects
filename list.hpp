@@ -6,23 +6,25 @@
 #ifndef LIST_HPP
 #define LIST_HPP
 #include <iostream>
-template <typename T> struct Node{
-    //Reference to the field data, which is set to the parameter data. 
-    //Reference to the field next, which is set to nullptr.
-    Node(T data) : data(data), next(nullptr) {} //takes value
-    Node(T data, Node<T>* next ) : data(data), next(next) {} //initializes value and the next pointer
-    T * find(T const& rhs);
-    
-	T data; //Data field inside node 
-	Node<T> * next; //Next is a field of type node ptr
-};//struct 	
+#include <functional>
 
 template <typename T> struct List{
-	List();
+private:
+    struct Node{
+        Node(T data, List<T>::Node* next ); 
+        ~Node();
+
+        T * find(T const& rhs);
+        T data; //Data field inside node 
+        Node * next = nullptr; //Next is a field of type node ptr
+    };//struct 	
+
+public:
 	~List();
 
     void push_front(T data); 
-
+    //To filter we pass the address of a function
+    void filter(std::function<bool(T const &)> predicate);//function pointer pred. takes a reference to a constant T  
 	void insert_sort(T data);			
 
     //Use pointer to return NULL if not found. 
@@ -30,8 +32,9 @@ template <typename T> struct List{
 
     template<typename U>
 	friend std::ostream& operator<<(std::ostream& out, List<U>& list);
+
 private:
-	Node<T> * head;
+	Node * head = nullptr;
 };
 #endif
 

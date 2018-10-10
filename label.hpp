@@ -13,13 +13,13 @@ struct Label{
     ~Label();
     
     bool add_artist(
-        char * name, 
-        char * description, 
-        char * top_story
+        char const * artist_name, 
+        char const * description, 
+        char const * top_story
     );
     bool update_song(
-        char const* artist, 
-        char const * name, 
+        char const * artist_name, 
+        char const * song_title, 
         int likes, 
         int views
     );
@@ -27,8 +27,8 @@ struct Label{
     void cull(int minimum_views);
 
     bool add_song(
-        char * artist,    
-        char * name,
+        char const * artist_name,    
+        char const * song_title,
         float length,
         int likes,
         int views
