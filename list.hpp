@@ -26,9 +26,10 @@ public:
     //To filter we pass the address of a function
     void filter(std::function<bool(T const &)> predicate);//function pointer pred. takes a reference to a constant T  
 	void insert_sort(T data);			
-
+    T remove(T const& rhs);//Used to remove song from list for re-sort.
     //Use pointer to return NULL if not found. 
     T * find(T const& rhs);//pass in rhs and do not modify
+    void for_each(std::function<void(T&)> funcy);
 
     template<typename U>
 	friend std::ostream& operator<<(std::ostream& out, List<U>& list);

@@ -94,7 +94,7 @@ void List<Song>::insert_sort(Song song){
 //Function: T * Node<T>::find(T const& rhs)
 //Inputs:   rhs is the right hand sid of the equivalency to be passed
 //Outputs:
-//Purpose: Used to find a node in a list of songs. 
+//Purpose: Search a node or following nodes for a value.
 //**********************************************************************//
 template<typename T>
 T * List<T>::Node::find(T const& rhs) {
@@ -109,7 +109,7 @@ T * List<T>::Node::find(T const& rhs) {
 //Function: T * List<T>::find(T const& rhs)
 //Inputs:   rhs is the right hand side of the equivalency to be passed
 //Outputs:
-//Purpose: Used to find an artist in a list.
+//Purpose: Search a list for a value.
 //**********************************************************************//
 template<typename T> 
 T * List<T>::find(T const& rhs) {
@@ -117,25 +117,75 @@ T * List<T>::find(T const& rhs) {
     return head->find(rhs);
 }
 
+
+
+
+//*************************************************//
+//Function:
+//Inputs:
+//Outputs:
+//Purpose:
+//*************************************************//
 template<typename T>
 void List<T>::filter(std::function<bool(T const &)> predicate){
     List<Song>::Node** prev = &head;//previosu contains the address of head
     List<Song>::Node* iter = head; //start at the front
     while(iter != nullptr) {
         bool keep = predicate(iter->data);//predicate will tell us if the node will be kept or deleted
-        if (keep){
-            prev = &iter->next; //point at the pointer
-            iter = iter->next; //moves to the next node
-        }//if
-
-        else {
+        if (!keep){
             *prev = iter->next;
             iter->next = nullptr;
             delete iter;
             iter = *prev;
-        }//else
+            continue; //short-circuit back to the top of the loop
+        }//if
+
+        prev = &iter->next; //point at the pointer
+        iter = iter->next; //moves to the next node
     }
 } 
+
+
+//*************************************************//
+//Function:
+//Inputs:
+//Outputs:
+//Purpose:
+//*************************************************//
+template<typename T>
+void List<T>::for_each(std::function<void(T&)> funcy){
+    for (List<Song>::Node* iter = head; iter != nullptr; iter = iter->next) {
+        funcy(iter->data);
+    }//for
+}
+
+
+//*************************************************//
+//Function:
+//Inputs:
+//Outputs:
+//Purpose:
+//*************************************************//
+template<typename T>
+T List<T>::remove(T const& rhs){
+    List<Song>::Node** prev = &head;//previosu contains the address of head
+    List<Song>::Node* iter = head; //start at the front
+    while(iter != nullptr) {
+        if (iter->data == rhs){
+            *prev = iter->next;
+            iter->next = nullptr; //snip connection from current element
+            T data = iter->data;
+            delete iter;
+            return data;
+        }//if
+
+        prev = &iter->next; //point at the pointer
+        iter = iter->next; //moves to the next node
+    }
+    throw std::runtime_error("Item not found.");
+}
+
+
 
 //*************************************************//
 //Function:
@@ -152,5 +202,4 @@ std::ostream& operator << (std::ostream& out, List<T>& list) {
 	return out;
 }
 
-
-template struct List<Song>;
+template struct List<Song>; //Need to instantiate templates within same translation unit; or else unlinkable

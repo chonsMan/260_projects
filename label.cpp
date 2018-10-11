@@ -5,6 +5,7 @@
 //         of views.
 //**********************************************************************//
 #include "label.hpp"
+#include <exception>
 
 
 
@@ -13,17 +14,16 @@
 //Inputs:   Artist's name, description, and top story
 //Outputs:  true if artist was added; false if existing
 //Purpose:  This functions simply adds an artist to a list of other
-//          artists.
+//          artist_list.
 //**********************************************************************//
-bool Label::add_artist(
+void Label::add_artist(
     char const * artist_name, 
     char const * description, 
     char const * top_story
 ) {
     Artist artist = Artist {artist_name, description, top_story};
-    if(artists.find(artist)) return false;//if find function does not return NULL; return false.
-    artists.push_front(artist);
-    return true; //we did add an artist
+    if(artist_list.find(artist)) throw std::runtime_error("Artist already exists");
+    artist_list.push_front(artist);
 }
 
 
@@ -34,15 +34,15 @@ bool Label::add_artist(
 //Outputs:  True if updated; false if not.
 //Purpose:  This function updates the number of views and likes.
 //**********************************************************************//
-bool Label::update_song(
+void Label::update_song(
     char const * artist_name, 
     char const * song_title, 
     int likes, 
     int views
 ) {
-    Artist* artist = artists.find(Artist{ artist_name, nullptr, nullptr });
-    if (artist == nullptr) return false;
-    return artist->update_song(song_title, likes, views);//return success
+    Artist* artist = artist_list.find(Artist{ artist_name, nullptr, nullptr });
+    if (artist == nullptr) throw std::runtime_error("Artist not found"); 
+    artist->update_song(song_title, likes, views);//return success
 }
 
 
@@ -54,6 +54,11 @@ bool Label::update_song(
 //Purpose:  To remove a song that does not exceed the view threshold. 
 //**********************************************************************//
 void Label::cull(int minimum_views){
+    artist_list.for_each(
+        [=](Artist& artist){//pass by value
+            artist.cull(minimum_views);
+        }
+    );
 
 }
 
@@ -65,12 +70,14 @@ void Label::cull(int minimum_views){
 //Outputs:  True if updated; false if not.
 //Purpose:  To add a new song to the list.
 //**********************************************************************//
-bool Label::add_song(
+void Label::add_song(
         char const * artist_name,    
-        char const * song_name,
+        char const * song_title,
         float length,
         int likes,
         int views
 ) {
-
+    Artist* artist = artist_list.find(Artist{ artist_name, nullptr, nullptr });
+    if (artist == nullptr) throw std::runtime_error("Artist not found"); 
+    artist->add_song(song_title, length, likes, views);//return success
 }

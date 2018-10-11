@@ -12,12 +12,12 @@ struct Label{
     Label(char const * fileName);
     ~Label();
     
-    bool add_artist(
+    void add_artist(
         char const * artist_name, 
         char const * description, 
         char const * top_story
     );
-    bool update_song(
+    void update_song(
         char const * artist_name, 
         char const * song_title, 
         int likes, 
@@ -26,7 +26,7 @@ struct Label{
 
     void cull(int minimum_views);
 
-    bool add_song(
+    void add_song(
         char const * artist_name,    
         char const * song_title,
         float length,
@@ -35,6 +35,6 @@ struct Label{
     );
 
 private:
-    List<Artist> artists; //Label has a member variable of type list
+    List<Artist> artist_list; //Label has a member variable of type list
 };
 #endif
