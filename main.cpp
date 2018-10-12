@@ -8,7 +8,7 @@ using namespace std;
 
 int main(){
     string source{"Eminem;rapper from Michigan;good rapper\n"};
-    stringstream stream{source}; 
+    stringstream stream{source};
     Artist artist = Artist::parse(stream);
 
     cout << artist << endl;

@@ -1,41 +1,126 @@
 //**********************************************************************//
 //File: list.cpp
 //Purpose: This file contains functions that are used to add data, find
-//         data and sort data. 
+//         data and sort data.
 //**********************************************************************//
 #ifndef LIST_HPP
 #define LIST_HPP
+
 #include <iostream>
 #include <functional>
 
-template <typename T> struct List{
+template <typename T>
+struct List{
 private:
     struct Node{
-        Node(T data, List<T>::Node* next ); 
-        ~Node();
+        Node(T data, List<T>::Node* next) : data(data), next(next) {};
+        ~Node() {
+            if (!next) return;
+            delete next;
+        }
 
-        T * find(T const& rhs);
-        T data; //Data field inside node 
+        //**********************************************************************//
+        //Function: T * Node<T>::find(T const& rhs)
+        //Inputs:   rhs is the right hand sid of the equivalency to be passed
+        //Outputs:
+        //Purpose: Search a node or following nodes for a value.
+        //**********************************************************************//
+        T * find(T const & rhs) {
+            if (data == rhs) return &data; // if found, return address of data
+            if (!next) return nullptr; // if at end and not found
+            return next->find(rhs); // use recursion to find next argument
+        }
+
+        T data; //Data field inside node
         Node * next = nullptr; //Next is a field of type node ptr
-    };//struct 	
+    };
 
 public:
-	~List();
+	~List() {
+        if (!head) return;
+        delete head;
+    }
 
-    void push_front(T data); 
-    //To filter we pass the address of a function
-    void filter(std::function<bool(T const &)> predicate);//function pointer pred. takes a reference to a constant T  
-	void insert_sort(T data);			
-    T remove(T const& rhs);//Used to remove song from list for re-sort.
-    //Use pointer to return NULL if not found. 
-    T * find(T const& rhs);//pass in rhs and do not modify
-    void for_each(std::function<void(T&)> funcy);
+	void insert_sort(T data);
 
-    template<typename U>
-	friend std::ostream& operator<<(std::ostream& out, List<U>& list);
+    //**********************************************************************//
+    //Function: void List<T>::push_front(T data)
+    //Inputs: T data from the Node struct
+    //Outputs: void
+    //Purpose: The purpose of this function is to push a node (such as an
+    //         artist) to the front of the list.
+    //**********************************************************************//
+    void push_front(T data) {
+        Node* new_node = new Node { data, head };//if head is NULL, then function terminates
+        head = new_node;
+    }
+
+    void filter(std::function<bool(T const &)> predicate) {
+        Node
+            ** prev = &head, //previosu contains the address of head
+            * iter = head; //start at the front
+
+        while(iter) {
+            bool keep = predicate(iter->data);//predicate will tell us if the node will be kept or deleted
+            if (!keep){
+                *prev = iter->next;
+                iter->next = nullptr;
+                delete iter;
+                iter = *prev;
+                continue; //short-circuit back to the top of the loop
+            }
+
+            prev = &iter->next; //point at the pointer
+            iter = iter->next; //moves to the next node
+        }
+    }
+
+    void for_each(std::function<void(T &)> funcy) {
+        for (Node* iter = head; iter; iter = iter->next)
+            funcy(iter->data);
+    }
+
+    T remove(T const& rhs) {
+        Node
+            ** prev = &head, //previosu contains the address of head
+            * iter = head; //start at the front
+
+        while(iter) {
+            if (iter->data == rhs){
+                *prev = iter->next;
+                iter->next = nullptr; //snip connection from current element
+                T data = iter->data;
+                delete iter;
+                return data;
+            }
+
+            prev = &iter->next; //point at the pointer
+            iter = iter->next; //moves to the next node
+        }
+
+        throw std::runtime_error("Item not found.");
+    }
+
+    //**********************************************************************//
+    //Function: T * List<T>::find(T const& rhs)
+    //Inputs:   rhs is the right hand side of the equivalency to be passed
+    //Outputs:
+    //Purpose: Search a list for a value.
+    //**********************************************************************//
+    T * find(T const& rhs) const {
+        if (!head) return nullptr;
+        return head->find(rhs);
+    }
+
+	friend std::ostream & operator<<(std::ostream & out, List<T> const & list) {
+        for(auto* curr = list.head; curr; curr = curr->next)
+            out << curr->data << '\n';
+
+        return out;
+    }
 
 private:
 	Node * head = nullptr;
 };
-#endif
 
+#endif
