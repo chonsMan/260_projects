@@ -1,3 +1,8 @@
+//**********************************************************************//
+//   File: song.hpp
+//Purpose: Houses the Song struct, which holds the information on each 
+//		   song from a particular artist. 
+//**********************************************************************//
 #ifndef SONG_HPP
 #define SONG_HPP
 
@@ -14,10 +19,6 @@ struct Song {
 
     bool operator==(Song const & rhs) const;
     friend std::ostream & operator<<(std::ostream & lhs, Song const & rhs);
-
-private:
-    const static size_t BUFF_LEN = 512;
-    static char* buffer;
 };
 
 #endif

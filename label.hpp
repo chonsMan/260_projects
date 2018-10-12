@@ -1,6 +1,11 @@
 //**********************************************************************//
 //File: label.hpp
-//Purpose:
+//Purpose: This serves as the top layer where the user will interact. It
+//		   houses functions that add an artist, update ad existing artist, 
+//		   cull a song with less than a certain number of views, and 
+//		   adds a song to a linked list. In addition, this sturct defines
+//		   operator overload for the cout functionality. It has a private
+//         member variable, artist_list, to store the artists.
 //**********************************************************************//
 #ifndef LABEL_HPP
 #define LABEL_HPP
@@ -35,9 +40,9 @@ struct Label{
         int views
     );
 
-    friend std::ostream & operator<<(std::ostream & stream, Label const & label);
+    friend std::ostream & operator<<(std::ostream & stream, Label const & label); //operator overload for cout.
 
 private:
-    List<Artist> artist_list;
+    List<Artist> artist_list; //stores artists in a list, of type artist.
 };
 #endif
