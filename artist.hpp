@@ -41,9 +41,6 @@ struct Artist {
 private:
     Artist() = default; //default constructor.
 
-    const static size_t BUFF_LEN = 512;
-    static char* buffer;
-
     char const * name, * top_story, * description;
     List<Song> song_list;
 };

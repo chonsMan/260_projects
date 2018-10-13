@@ -4,8 +4,8 @@
 //         data and sort data. Because these fuctions are typecasted,
 //         both their declaration and definition are present in this
 //		   file.The purpose of the List struct is to generate a list. It does so
-//		   through the use of an internal struct called Node. Node is, 
-//		   of course, what generates nodes to be members of the list. 
+//		   through the use of an internal struct called Node. Node is,
+//		   of course, what generates nodes to be members of the list.
 //		   The Node struct is private to the List struct. Also private
 //         to the list is the node pointer head.
 //**********************************************************************//
@@ -18,11 +18,37 @@
 
 
 template <typename T>
-struct List{
+struct List {
+private:
+    struct Node {
+        Node(T data, List<T>::Node* next) : data(data), next(next) {}; //constructor
+        ~Node() { //destructor
+            if (!next) return;
+            delete next;
+        }
+
+        //**********************************************************************//
+        //Function: T find(T const& rhs)
+        //  Inputs: rhs is the right hand sid of the equivalency to be passed
+        // Outputs:	Returns address of data or the next node in a list, recursively
+        // Purpose: Search a node or following nodes for a value.
+        //**********************************************************************//
+        T * find(T const & rhs) {
+            if (data == rhs) return &data; // if found, return address of data
+            if (!next) return nullptr; // if at end and not found
+            return next->find(rhs); // use recursion to find next argument
+        }
+
+        T data; //Data field inside node
+        Node * next = nullptr; //Next is a field of type node ptr
+    };
+
+	Node * head = nullptr;
+
 public:
 	void insert_sort(T data);
-	
-	
+
+
     //**********************************************************************//
     //Function: ~List()
     //  Inputs: None
@@ -34,7 +60,7 @@ public:
         delete head;
     }
 
-	
+
 
     //**********************************************************************//
     //Function: void List<T>::push_front(T data)
@@ -48,12 +74,12 @@ public:
         head = new_node;
     }
 
-	
-	
+
+
 	//**********************************************************************//
     //Function: void filter(std::function<bool(T const &)> predicate)
-    //  Inputs: 
-    // Outputs: 
+    //  Inputs:
+    // Outputs:
     // Purpose: Filters the list.
     //**********************************************************************//
     void filter(std::function<bool(T const &)> predicate) {
@@ -76,23 +102,23 @@ public:
         }
     }
 
-	
+
 	//**********************************************************************//
     //Function: void for_each(std::function<void(T &)> funcy)
-    //  Inputs:   
+    //  Inputs:
     // Outputs:
-    // Purpose: 
+    // Purpose:
     //**********************************************************************//
     void for_each(std::function<void(T &)> funcy) {
         for (Node* iter = head; iter; iter = iter->next)
             funcy(iter->data);
     }
 
-	
-	
+
+
 	//**********************************************************************//
     //Function: T remove(T const& rhs)
-    //  Inputs:  
+    //  Inputs:
     // Outputs: Returns data of type T or a runtime error if item not found.
     // Purpose: This function is used to "lift" a node out of a list to be able
     //          to insert data
@@ -118,12 +144,12 @@ public:
         throw std::runtime_error("Item not found."); //if we never find it
     }
 
-	
-	
+
+
     //**********************************************************************//
     //Function: T * find(T const& rhs)
     //  Inputs: rhs is the right hand side of the equivalency to be passed
-    // Outputs:  
+    // Outputs:
     // Purpose: Search a list for a value. Recursive function.
     //**********************************************************************//
     T * find(T const& rhs) const {
@@ -131,12 +157,12 @@ public:
         return head->find(rhs);
     }
 
-	
+
 	//**********************************************************************//
     //Function: friend std::ostream & operator<<(std::ostream & out, List<T> const & list)
     //  Inputs: ostream operator and a reference to a list
-    // Outputs: 
-    // Purpose: 
+    // Outputs:
+    // Purpose:
     //**********************************************************************//
 	friend std::ostream & operator<<(std::ostream & out, List<T> const & list) {
         for(auto* curr = list.head; curr; curr = curr->next)
@@ -144,34 +170,6 @@ public:
 
         return out;
     }
-	
-	
-private:
-    struct Node{
-        Node(T data, List<T>::Node* next) : data(data), next(next) {}; //constructor
-        ~Node() { //destructor
-            if (!next) return;
-            delete next;
-        }
-
-        //**********************************************************************//
-        //Function: T find(T const& rhs)
-        //  Inputs: rhs is the right hand sid of the equivalency to be passed
-        // Outputs:	Returns address of data or the next node in a list, recursively
-        // Purpose: Search a node or following nodes for a value.
-        //**********************************************************************//
-        T * find(T const & rhs) {
-            if (data == rhs) return &data; // if found, return address of data
-            if (!next) return nullptr; // if at end and not found
-            return next->find(rhs); // use recursion to find next argument
-        }
-
-        T data; //Data field inside node
-        Node * next = nullptr; //Next is a field of type node ptr
-    };
-	
-	Node * head = nullptr;
-	
 };
 
 #endif

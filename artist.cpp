@@ -15,7 +15,7 @@ void Artist::cull(int minimum_views) {
     song_list.filter(
         // [=] means pass captures by value
         [=](Song const & song){
-            return song.views >= minimum_views;
+            return song.get_views() >= minimum_views;
         }
     );
 }
@@ -27,16 +27,22 @@ Artist::~Artist() {
 }
 
 void Artist::update_song(char const* song_title, int likes, int views) {
-    Song song;
+    Song original;
+
     try {
-        song = song_list.remove(Song::dummy(song_title));
+        original = song_list.remove(Song::dummy(song_title));
     } catch (std::runtime_error& _err){
         throw std::runtime_error("Song not found");
     }
 
-    song.likes = likes;
-    song.views = views;
-    song_list.insert_sort(song);
+    song_list.insert_sort(
+        Song {
+            original.get_title(),
+            original.get_length(),
+            likes,
+            views
+        }
+    );
 }
 
 //**********************************************************************//
@@ -60,9 +66,7 @@ void Artist::add_song(
 //Function:
 //Inputs:
 //Outputs:
-//Purpose:  Song factory. Static buffer to call parse over and over and
-//          if there were a new buffer for each one it woul be allocated
-//          and destroyes, ad infinitum.
+//Purpose:  Song factory.
 //**********************************************************************//
 Artist Artist::parse(std::istream & stream){
     size_t read_bytes;
@@ -100,6 +104,3 @@ std::ostream & operator<<(std::ostream & lhs, Artist const & rhs) {
         << rhs.top_story << '\n'
         << rhs.song_list;
 }
-
-// Static initializer
-char * Artist::buffer = new char[Artist::BUFF_LEN];

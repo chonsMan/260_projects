@@ -24,7 +24,7 @@ void List<Song>::insert_sort(Song song){
         ** prev = &head, //previosu contains the address of head
         * iter = head; //start at the front
 
-    while(iter && iter->data.views > song.views) {
+    while(iter && iter->data.get_views() > song.get_views()) {
         prev = &iter->next; //point at the pointer
         iter = iter->next; //moves to the next node
     }
@@ -33,21 +33,24 @@ void List<Song>::insert_sort(Song song){
     *prev = song_node;
 }
 
+Song::Song(char const * title, float length, int views, int likes)
+    : title(title), length(length), views(views), likes(likes) {}
+
 //**********************************************************************//
-//Function:
-//Inputs:
-//Outputs:
-//Purpose:  Song factory.
+//Function: Song::parse(std::istream &)
+//Inputs: input stream starting with serialized song
+//Outputs: parsed song
+//Purpose: Dummy song factory.
 //**********************************************************************//
-Song Song::dummy(char const* title){
+Song Song::dummy(char const* title) {
     return Song { title, 0, 0, 0 };
 }
 
 //**********************************************************************//
-//Function:
+//Function: Song::parse(std::istream &)
 //Inputs:
 //Outputs:
-//Purpose:  Song factory.
+//Purpose: Parse song from input stream
 //**********************************************************************//
 Song Song::parse(std::istream & stream) {
     Song song;
@@ -65,10 +68,31 @@ Song Song::parse(std::istream & stream) {
 }
 
 //**********************************************************************//
-//Function:
-//Inputs:
-//Outputs:
-//Purpose:  Song factory.
+//Function: Song::~Song()
+//Inputs: void
+//Outputs: void
+//Purpose: Deallocate title
+//**********************************************************************//
+Song::~Song() {
+    delete title;
+}
+
+//**********************************************************************//
+//Function: Member getters
+//Inputs: void
+//Outputs: Fields
+//Purpose: Access Song data members
+//**********************************************************************//
+char const * Song::get_title() const { return title; }
+float Song::get_length() const { return length; }
+int Song::get_views() const { return views; }
+int Song::get_likes() const { return likes; }
+
+//**********************************************************************//
+//Function: Song::operator==(Song const &) const
+//Inputs: Song to compare
+//Outputs: Equality as boolean
+//Purpose: Compare songs by title
 //**********************************************************************//
 bool Song::operator==(Song const & rhs) const {
     // strcmp returns distance between different chars; zero if equal
@@ -82,6 +106,3 @@ std::ostream & operator<<(std::ostream & lhs, Song const & rhs) {
         << rhs.views << ';'
         << rhs.likes << '\n';
 }
-
-// Static initializer
-char * Song::buffer = new char[Song::BUFF_LEN];
