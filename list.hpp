@@ -20,6 +20,7 @@ struct List {
 private:
     struct Node {
         Node(T * data, List<T>::Node* next) : data(data), next(next) {}; //constructor
+        Node(Node const & rhs) = delete;
         ~Node() { //destructor
             delete data;
             if (!next) return;
@@ -45,6 +46,9 @@ private:
 	Node * head = nullptr;
 
 public:
+    List() = default;
+    List(List const & rhs) = delete;
+
 	void insert_sort(T * data);
 
 

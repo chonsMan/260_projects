@@ -15,6 +15,7 @@
 
 struct Label{
     Label() = default;
+    Label(Label const & rhs) = delete;
     ~Label() = default;
 
     void add_artist(

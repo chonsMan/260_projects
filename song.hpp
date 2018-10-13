@@ -11,6 +11,7 @@
 
 struct Song {
     Song() = default;
+    Song(Song const & rhs) = delete;
     Song(char const * title);
     Song(char const * title, float length, int views, int likes);
     ~Song();
