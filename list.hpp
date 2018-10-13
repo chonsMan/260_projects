@@ -15,14 +15,13 @@
 #include <iostream>
 #include <functional>
 
-
-
 template <typename T>
 struct List {
 private:
     struct Node {
-        Node(T data, List<T>::Node* next) : data(data), next(next) {}; //constructor
+        Node(T * data, List<T>::Node* next) : data(data), next(next) {}; //constructor
         ~Node() { //destructor
+            delete data;
             if (!next) return;
             delete next;
         }
@@ -34,19 +33,19 @@ private:
         // Purpose: Search a node or following nodes for a value.
         //**********************************************************************//
         T * find(T const & rhs) {
-            if (data == rhs) return &data; // if found, return address of data
+            if (*data == rhs) return data; // if found, return address of data
             if (!next) return nullptr; // if at end and not found
             return next->find(rhs); // use recursion to find next argument
         }
 
-        T data; //Data field inside node
+        T * data; //Data field inside node
         Node * next = nullptr; //Next is a field of type node ptr
     };
 
 	Node * head = nullptr;
 
 public:
-	void insert_sort(T data);
+	void insert_sort(T * data);
 
 
     //**********************************************************************//
@@ -69,11 +68,9 @@ public:
     // Purpose: The purpose of this function is to push a node (such as an
     //          artist) to the front of the list.
     //**********************************************************************//
-    void push_front(T data) {
-        Node* new_node = new Node { data, head };//if head is NULL, then function terminates
-        head = new_node;
+    void push_front(T * data) {
+        head = new Node { data, head };//if head is NULL, then list auto terminates
     }
-
 
 
 	//**********************************************************************//
@@ -88,7 +85,7 @@ public:
             * iter = head; //start at the front
 
         while(iter) {
-            bool keep = predicate(iter->data);//predicate will tell us if the node will be kept or deleted
+            bool keep = predicate(*iter->data);//predicate will tell us if the node will be kept or deleted
             if (!keep){
                 *prev = iter->next;
                 iter->next = nullptr;
@@ -111,7 +108,7 @@ public:
     //**********************************************************************//
     void for_each(std::function<void(T &)> funcy) {
         for (Node* iter = head; iter; iter = iter->next)
-            funcy(iter->data);
+            funcy(*iter->data);
     }
 
 
@@ -123,16 +120,17 @@ public:
     // Purpose: This function is used to "lift" a node out of a list to be able
     //          to insert data
     //**********************************************************************//
-    T remove(T const& rhs) {
+    T * remove(T const& rhs) {
         Node
             ** prev = &head, //previous contains the address of head
             * iter = head; //start at the front
 
         while(iter) {
-            if (iter->data == rhs){ //if we found what we are looking for
+            if (*iter->data == rhs){ //if we found what we are looking for
                 *prev = iter->next; //deref. prev and set it equal to the next node after iter
                 iter->next = nullptr; //snip connection from current element
-                T data = iter->data;  //data equals data inside current element
+                T * data = iter->data;  //data equals data inside current element
+                iter->data = nullptr; // Prevent iter from deleting data
                 delete iter; //delete element
                 return data; //return the data to be used
             }
@@ -153,7 +151,9 @@ public:
     // Purpose: Search a list for a value. Recursive function.
     //**********************************************************************//
     T * find(T const& rhs) const {
-        if (!head) return nullptr;
+        if (!head) {
+            return nullptr;
+        }
         return head->find(rhs);
     }
 
@@ -165,10 +165,12 @@ public:
     // Purpose:
     //**********************************************************************//
 	friend std::ostream & operator<<(std::ostream & out, List<T> const & list) {
-        for(auto* curr = list.head; curr; curr = curr->next)
-            out << curr->data << '\n';
+        auto * curr = list.head;
 
-        return out;
+        for(; curr->next; curr = curr->next)
+            out << *curr->data << '\n';
+
+        return out << *curr->data;
     }
 };
 

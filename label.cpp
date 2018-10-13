@@ -5,12 +5,28 @@
 //         of views.
 //**********************************************************************//
 #include <exception>
+#include <iostream>
+
 #include "label.hpp"
+#include "song.hpp"
+#include "c_helpers.hpp"
+
+//**********************************************************************//
+//Function: add_artist(xxx)
+//Inputs:   Artist
+//Outputs:  void
+//Purpose:  This functions simply adds an artist to a list of other
+//          artist_list.
+//**********************************************************************//
+void Label::add_artist(Artist * artist) {
+    if(artist_list.find(*artist)) throw std::runtime_error("Artist already exists");
+    artist_list.push_front(artist);
+}
 
 //**********************************************************************//
 //Function: add_artist(xxx)
 //Inputs:   Artist's name, description, and top story
-//Outputs:  true if artist was added; false if existing
+//Outputs:  void
 //Purpose:  This functions simply adds an artist to a list of other
 //          artist_list.
 //**********************************************************************//
@@ -19,9 +35,7 @@ void Label::add_artist(
     char const * description,
     char const * top_story
 ) {
-    Artist artist = Artist { artist_name, description, top_story };
-    if(artist_list.find(artist)) throw std::runtime_error("Artist already exists");
-    artist_list.push_front(artist);
+    add_artist(new Artist { artist_name, description, top_story });
 }
 
 //**********************************************************************//
@@ -36,7 +50,7 @@ void Label::update_song(
     int likes,
     int views
 ) {
-    Artist* artist = artist_list.find(Artist::dummy(artist_name));
+    Artist * const artist = artist_list.find(Artist(artist_name));
     if (!artist) throw std::runtime_error("Artist not found");
     artist->update_song(song_title, likes, views);//return success
 }
@@ -70,11 +84,21 @@ void Label::add_song(
         int likes,
         int views
 ) {
-    Artist* artist = artist_list.find(Artist::dummy(artist_name));
+    Artist * const artist = artist_list.find(Artist(artist_name));
     if (!artist) throw std::runtime_error("Artist not found");
-    artist->add_song(song_title, length, likes, views);
+    artist->add_song(new Song { song_title, length, views, likes });
 }
 
 std::ostream & operator<<(std::ostream & stream, Label const & label) {
     return stream << label.artist_list;
+}
+
+std::istream & operator>>(std::istream & stream, Label & label) {
+    while (stream.peek() != -1) {
+        Artist * artist = new Artist;
+        stream >> *artist;
+        label.add_artist(artist);
+    }
+
+    return stream;
 }

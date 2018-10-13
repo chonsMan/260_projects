@@ -10,10 +10,10 @@ $(EXE): main.cpp song.o artist.o label.o c_helpers.o
 song.o: song.cpp song.hpp
 	$(CXX) -c -o song.o song.cpp $(CXXFLAGS)
 
-artist.o: artist.cpp artist.hpp
+artist.o: artist.cpp artist.hpp list.hpp
 	$(CXX) -c -o artist.o artist.cpp $(CXXFLAGS)
 
-label.o: label.cpp label.hpp
+label.o: label.cpp label.hpp list.hpp
 	$(CXX) -c -o label.o label.cpp $(CXXFLAGS)
 
 c_helpers.o: c_helpers.cpp c_helpers.hpp

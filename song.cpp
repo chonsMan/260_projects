@@ -12,7 +12,7 @@
 //         the need for a higher-order function.
 //**********************************************************************//
 template <> //template function with no undefined types; previously T was undefined
-void List<Song>::insert_sort(Song song){
+void List<Song>::insert_sort(Song * song){
     List<Song>::Node * song_node = new List<Song>::Node { song, nullptr };
 
     if(!head){
@@ -24,7 +24,7 @@ void List<Song>::insert_sort(Song song){
         ** prev = &head, //previosu contains the address of head
         * iter = head; //start at the front
 
-    while(iter && iter->data.get_views() > song.get_views()) {
+    while(iter && iter->data->get_views() > song->get_views()) {
         prev = &iter->next; //point at the pointer
         iter = iter->next; //moves to the next node
     }
@@ -34,7 +34,7 @@ void List<Song>::insert_sort(Song song){
 }
 
 Song::Song(char const * title, float length, int views, int likes)
-    : title(title), length(length), views(views), likes(likes) {}
+    : title(strcpy_allocated(title)), length(length), views(views), likes(likes) {}
 
 //**********************************************************************//
 //Function: Song::parse(std::istream &)
@@ -42,39 +42,11 @@ Song::Song(char const * title, float length, int views, int likes)
 //Outputs: parsed song
 //Purpose: Dummy song factory.
 //**********************************************************************//
-Song Song::dummy(char const* title) {
-    return Song { title, 0, 0, 0 };
-}
+Song::Song(char const* title) : title(strcpy_allocated(title)) {}
 
-//**********************************************************************//
-//Function: Song::parse(std::istream &)
-//Inputs:
-//Outputs:
-//Purpose: Parse song from input stream
-//**********************************************************************//
-Song Song::parse(std::istream & stream) {
-    Song song;
-
-    song.title = getline_allocated(stream, ';');
-
-    stream >> song.length;
-    stream.get();
-    stream >> song.views;
-    stream.get();
-    stream >> song.likes;
-    stream.get();
-
-    return song;
-}
-
-//**********************************************************************//
-//Function: Song::~Song()
-//Inputs: void
-//Outputs: void
-//Purpose: Deallocate title
-//**********************************************************************//
 Song::~Song() {
-    delete title;
+    if (title) delete title;
+    title = nullptr;
 }
 
 //**********************************************************************//
@@ -96,7 +68,8 @@ int Song::get_likes() const { return likes; }
 //**********************************************************************//
 bool Song::operator==(Song const & rhs) const {
     // strcmp returns distance between different chars; zero if equal
-    return std::strcmp(title, rhs.title) == 0;
+    bool result = std::strcmp(title, rhs.title) == 0;
+    return result;
 }
 
 std::ostream & operator<<(std::ostream & lhs, Song const & rhs) {
@@ -104,5 +77,24 @@ std::ostream & operator<<(std::ostream & lhs, Song const & rhs) {
         << rhs.title << ';'
         << rhs.length << ';'
         << rhs.views << ';'
-        << rhs.likes << '\n';
+        << rhs.likes;
+}
+
+//**********************************************************************//
+//Function:
+//Inputs:
+//Outputs:
+//Purpose: Parse song from input stream
+//**********************************************************************//
+std::istream & operator>>(std::istream & stream, Song & song) {
+    song.title = getline_allocated(stream, ';');
+
+    stream >> song.length;
+    stream.get(); // Consume ';'
+    stream >> song.views;
+    stream.get(); // Consume ';'
+    stream >> song.likes;
+    stream.get(); // Consume '\n'
+
+    return stream;
 }

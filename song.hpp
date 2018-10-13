@@ -11,9 +11,8 @@
 
 struct Song {
     Song() = default;
+    Song(char const * title);
     Song(char const * title, float length, int views, int likes);
-    static Song dummy(char const* title);
-    static Song parse(std::istream & stream);
     ~Song();
 
     char const * get_title() const;
@@ -22,7 +21,8 @@ struct Song {
     int get_views() const;
 
     bool operator==(Song const & rhs) const;
-    friend std::ostream & operator<<(std::ostream & lhs, Song const & rhs);
+    friend std::ostream & operator<<(std::ostream & stream, Song const & song);
+    friend std::istream & operator>>(std::istream & stream, Song & song);
 
 private:
     char const * title;

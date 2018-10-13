@@ -17,31 +17,30 @@
 #include "song.hpp"
 
 struct Artist {
-    Artist(char const* name, char const * description, char const * top_story); //basic constructor
-    static Artist dummy(char const * name); //constructor for checking if artist already exists
-    static Artist parse(std::istream & stream);
+    Artist() = default; //default constructor.
+    Artist(char const * name, char const * description, char const * top_story); //basic constructor
+    Artist(char const * name); //constructor for checking if artist already exists
+    static Artist * parse(std::istream & stream);
     ~Artist();
 
     void cull(int minimum_views);
-    void add_song(
-        char const * song_title,
-        float length,
-        int likes,
-        int views
-    );
+    void add_song(Song * song);
     void update_song(
-        char const* song_title,
+        char const * song_title,
         int likes,
         int views
     );
 
     bool operator==(Artist const & rhs) const;
-    friend std::ostream & operator<<(std::ostream & lhs, Artist const & rhs);
+    friend std::ostream & operator<<(std::ostream & stream, Artist const & artist);
+    friend std::istream & operator>>(std::istream & stream, Artist & artist);
 
 private:
-    Artist() = default; //default constructor.
+    char const
+        * name = nullptr,
+        * top_story = nullptr,
+        * description = nullptr;
 
-    char const * name, * top_story, * description;
     List<Song> song_list;
 };
 

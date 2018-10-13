@@ -10,4 +10,6 @@
 
 char * getline_allocated(std::istream & stream, char delimiter);
 
+char * strcpy_allocated(char const * const source);
+
 #endif
