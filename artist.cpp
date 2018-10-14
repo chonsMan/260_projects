@@ -4,14 +4,39 @@
 #include <cstring>
 #include <exception>
 
+
+
+//**********************************************************************//
+//Function: constructor (basic)
+//Inputs:   name, description, top_story
+//Outputs:  void
+//Purpose:  Allocate a new artist. This is allocated on the heap, so that
+//          the artist can do with it what it wants. 
+//**********************************************************************//
 Artist::Artist(char const* name, char const * description, char const * top_story) :
     name(strcpy_allocated(name)),
     description(strcpy_allocated(description)),
     top_story(strcpy_allocated(top_story))
 {};
 
+
+
+//**********************************************************************//
+//Function: constructor (dummy)
+//Inputs:   name
+//Outputs:  void
+//Purpose:  Dummy artist used to search the list.
+//**********************************************************************//
 Artist::Artist(char const * name) : name(strcpy_allocated(name)) {}
 
+
+
+//**********************************************************************//
+//Function: destructor
+//Inputs:   song
+//Outputs:  void
+//Purpose:  Destruct the list
+//**********************************************************************//
 Artist::~Artist() {
     if (name) delete name;
     if (description) delete description;
@@ -28,6 +53,15 @@ void Artist::cull(int minimum_views) {
     );
 }
 
+
+
+//**********************************************************************//
+//Function: update_song
+//  Inputs: title, likes, views
+// Outputs: void
+// Purpose: Finds the artists that needs to be updated. Calls update
+//          functionality.
+//**********************************************************************//
 void Artist::update_song(char const * song_title, int likes, int views) {
     Song * original;
 
@@ -49,6 +83,8 @@ void Artist::update_song(char const * song_title, int likes, int views) {
     delete original;
 }
 
+
+
 //**********************************************************************//
 //Function: add_song(Song song)
 //Inputs:   song
@@ -60,6 +96,8 @@ void Artist::add_song(Song * song) {
     song_list.insert_sort(song);
 }
 
+
+
 //**********************************************************************//
 //Function:
 //Inputs:
@@ -70,6 +108,8 @@ bool Artist::operator==(Artist const & rhs) const {
     //return distance between different chars; zero if equal
     return std::strcmp(name, rhs.name) == 0;
 }
+
+
 
 //**********************************************************************//
 //Function:
@@ -85,6 +125,8 @@ std::ostream & operator<<(std::ostream & stream, Artist const & artist) {
         << artist.top_story << '\n'
         << artist.song_list;
 }
+
+
 
 //**********************************************************************//
 //Function:

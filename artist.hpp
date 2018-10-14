@@ -18,7 +18,7 @@
 
 struct Artist {
     Artist() = default; //default constructor.
-    Artist(Artist const & rhs) = delete;
+    Artist(Artist const & rhs) = delete; //remove copy constructor
     Artist(char const * name, char const * description, char const * top_story); //basic constructor
     Artist(char const * name); //constructor for checking if artist already exists
     static Artist * parse(std::istream & stream);

@@ -76,6 +76,7 @@ public:
         head = new Node { data, head };//if head is NULL, then list auto terminates
     }
 
+    
 
 	//**********************************************************************//
     //Function: void filter(std::function<bool(T const &)> predicate)
@@ -170,6 +171,7 @@ public:
     //**********************************************************************//
 	friend std::ostream & operator<<(std::ostream & out, List<T> const & list) {
         auto * curr = list.head;
+        if(!curr) return out;
 
         for(; curr->next; curr = curr->next)
             out << *curr->data << '\n';

@@ -42,10 +42,10 @@ struct Label{
     );
 
     friend std::ostream & operator<<(std::ostream & stream, Label const & label); //operator overload for cout.
-    friend std::istream & operator>>(std::istream & stream, Label & label); //operator overload for cout.
+    friend std::istream & operator>>(std::istream & stream, Label & label); //operator overload for input stream.
 
 private:
-    void add_artist(Artist * artist);
+    void add_artist(Artist * artist);//
     List<Artist> artist_list; //stores artists in a list, of type artist.
 };
 #endif

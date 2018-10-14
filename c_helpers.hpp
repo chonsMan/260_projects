@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-char * getline_allocated(std::istream & stream, char delimiter);
+char * getline_allocated(std::istream & stream, char delimiter = '\n');
 
 char * strcpy_allocated(char const * const source);
 

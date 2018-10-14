@@ -21,7 +21,7 @@ void List<Song>::insert_sort(Song * song){
     }
 
     List<Song>::Node
-        ** prev = &head, //previosu contains the address of head
+        ** prev = &head, //previous contains the address of head
         * iter = head; //start at the front
 
     while(iter && iter->data->get_views() > song->get_views()) {
@@ -36,6 +36,8 @@ void List<Song>::insert_sort(Song * song){
 Song::Song(char const * title, float length, int views, int likes)
     : title(strcpy_allocated(title)), length(length), views(views), likes(likes) {}
 
+
+
 //**********************************************************************//
 //Function: Song::parse(std::istream &)
 //Inputs: input stream starting with serialized song
@@ -49,6 +51,8 @@ Song::~Song() {
     title = nullptr;
 }
 
+
+
 //**********************************************************************//
 //Function: Member getters
 //Inputs: void
@@ -59,6 +63,8 @@ char const * Song::get_title() const { return title; }
 float Song::get_length() const { return length; }
 int Song::get_views() const { return views; }
 int Song::get_likes() const { return likes; }
+
+
 
 //**********************************************************************//
 //Function: Song::operator==(Song const &) const
@@ -72,6 +78,14 @@ bool Song::operator==(Song const & rhs) const {
     return result;
 }
 
+
+
+//**********************************************************************//
+//Function: add_song(Song song)
+//Inputs:   song
+//Outputs:  void
+//Purpose:  To add a new song to the list.
+//**********************************************************************//
 std::ostream & operator<<(std::ostream & lhs, Song const & rhs) {
     return lhs
         << rhs.title << ';'
@@ -79,6 +93,8 @@ std::ostream & operator<<(std::ostream & lhs, Song const & rhs) {
         << rhs.views << ';'
         << rhs.likes;
 }
+
+
 
 //**********************************************************************//
 //Function:

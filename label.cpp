@@ -23,6 +23,8 @@ void Label::add_artist(Artist * artist) {
     artist_list.push_front(artist);
 }
 
+
+
 //**********************************************************************//
 //Function: add_artist(xxx)
 //Inputs:   Artist's name, description, and top story
@@ -35,8 +37,10 @@ void Label::add_artist(
     char const * description,
     char const * top_story
 ) {
-    add_artist(new Artist { artist_name, description, top_story });
+    add_artist(new Artist { artist_name, description, top_story });//call private constructor
 }
+
+
 
 //**********************************************************************//
 //Function: update_song()
@@ -55,6 +59,8 @@ void Label::update_song(
     artist->update_song(song_title, likes, views);//return success
 }
 
+
+
 //**********************************************************************//
 //Function: cull(int minimum_views)
 //Inputs:   An intiger value of minimum views
@@ -70,6 +76,8 @@ void Label::cull(int minimum_views){
     );
 
 }
+
+
 
 //**********************************************************************//
 //Function: add_song(xxx)
@@ -89,14 +97,30 @@ void Label::add_song(
     artist->add_song(new Song { song_title, length, views, likes });
 }
 
+
+
+//**********************************************************************//
+//Function: add_song(Song song)
+//Inputs:   song
+//Outputs:  void
+//Purpose:  To add a new song to the list.
+//**********************************************************************//
 std::ostream & operator<<(std::ostream & stream, Label const & label) {
     return stream << label.artist_list;
 }
 
+
+
+//**********************************************************************//
+//Function: add_song(Song song)
+//Inputs:   song
+//Outputs:  void
+//Purpose:  To add a new song to the list.
+//**********************************************************************//
 std::istream & operator>>(std::istream & stream, Label & label) {
-    while (stream.peek() != -1) {
-        Artist * artist = new Artist;
-        stream >> *artist;
+    while (stream.peek() != -1) { //peek looks ar next char w/o removing from stream. -1 is at end.
+        Artist * artist = new Artist;//call default constructor
+        stream >> *artist; //read an artist from stream
         label.add_artist(artist);
     }
 
