@@ -1,6 +1,20 @@
+
+//**********************************************************************//
+//   File: interface.cpp
+//Purpose: Allows top level interaction from user for adding an artist, 
+//         adding a song, updating a song, removing a song, displaying
+//         the label, and removing songs.
+//**********************************************************************//
 #include "interface.hpp"
 #include "c_helpers.hpp"
 
+
+//**********************************************************************//
+//Function: add_artist
+//Inputs:   Text from user
+//Outputs:  Text for user
+//Purpose:  Allows for addition of artist, description, and top story.
+//**********************************************************************//
 void add_artist  (std::ostream & output, std::istream & input, Label & label){
     output << "What is the name of the artist?" << std::endl;;
     char * artist = getline_allocated(input);
@@ -21,6 +35,12 @@ void add_artist  (std::ostream & output, std::istream & input, Label & label){
 }
 
 
+//**********************************************************************//
+//Function: add_song(Song song)
+//Inputs:   song
+//Outputs:  void
+//Purpose:  To add a new song to the list.
+//**********************************************************************//
 void add_song(std::ostream & output, std::istream & input, Label & label){
     output << "Which artist?" << std::endl;;
     char * artist = getline_allocated(input);
@@ -49,6 +69,14 @@ void add_song(std::ostream & output, std::istream & input, Label & label){
     delete[] artist; //delete entire artist; not just what the pointer points to 
 
 }
+
+
+//**********************************************************************//
+//Function: add_song(Song song)
+//Inputs:   song
+//Outputs:  void
+//Purpose:  To add a new song to the list.
+//**********************************************************************//
 void update_song (std::ostream & output, std::istream & input, Label & label){
     output << "Which artist?" << std::endl;;
     char * artist = getline_allocated(input);
@@ -72,6 +100,14 @@ void update_song (std::ostream & output, std::istream & input, Label & label){
     delete[] song; 
     delete[] artist; //delete entire artist; not just what the pointer points to 
 }
+
+
+//**********************************************************************//
+//Function: add_song(Song song)
+//Inputs:   song
+//Outputs:  void
+//Purpose:  To add a new song to the list.
+//**********************************************************************//
 void remove_songs(std::ostream & output, std::istream & input, Label & label){
     output << "What are the minimum number of views?" << std::endl;
     int min;
@@ -79,11 +115,26 @@ void remove_songs(std::ostream & output, std::istream & input, Label & label){
     input.ignore();
     label.cull(min); 
 }
+
+
+//**********************************************************************//
+//Function: add_song(Song song)
+//Inputs:   song
+//Outputs:  void
+//Purpose:  To add a new song to the list.
+//**********************************************************************//
 void display(std::ostream & output, Label const & label) {
     output << label << std::endl;
 }
 
 
+
+//**********************************************************************//
+//Function: add_song(Song song)
+//Inputs:   song
+//Outputs:  void
+//Purpose:  To add a new song to the list.
+//**********************************************************************//
 void help(std::ostream & output){
     output 
         << "a = add artist\n" 
@@ -94,12 +145,19 @@ void help(std::ostream & output){
         << "q = quit program" << std::endl;
 }
 
+
+//**********************************************************************//
+//Function: add_song(Song song)
+//Inputs:   song
+//Outputs:  void
+//Purpose:  To add a new song to the list.
+//**********************************************************************//
 bool interface_execute(
     std::istream & input,
     std::ostream & output,
     Label & label
 ) {
-
+    //Give user option for input. Devlop case statement for user option.
     output << "Hello! [a,u,s,r,d,q,?]?" << std::endl;
     char * user_input = getline_allocated(input);
     switch (user_input[0]) {

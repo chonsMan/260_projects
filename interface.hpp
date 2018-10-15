@@ -1,3 +1,8 @@
+
+//**********************************************************************//
+//   File: interface.hpp
+//Purpose: houses function definition for user interface execution.
+//**********************************************************************//
 #ifndef INTERFACE_HPP                                                                
 #define INTERFACE_HPP                                                                
                                                                                      

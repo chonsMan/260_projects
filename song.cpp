@@ -1,3 +1,7 @@
+//**********************************************************************//
+//   File: song.cpp
+//Purpose: Implement Song functions. 
+//**********************************************************************//
 #include "song.hpp"
 #include "list.hpp"
 #include "c_helpers.hpp"
@@ -46,7 +50,7 @@ Song::Song(char const * title, float length, int views, int likes)
 //**********************************************************************//
 Song::Song(char const* title) : title(strcpy_allocated(title)) {}
 
-Song::~Song() {
+Song::~Song() {//TODO
     if (title) delete title;
     title = nullptr;
 }
@@ -60,9 +64,9 @@ Song::~Song() {
 //Purpose: Access Song data members
 //**********************************************************************//
 char const * Song::get_title() const { return title; }
-float Song::get_length() const { return length; }
-int Song::get_views() const { return views; }
-int Song::get_likes() const { return likes; }
+float       Song::get_length() const { return length; }
+int          Song::get_views() const { return views; }
+int          Song::get_likes() const { return likes; }
 
 
 
@@ -81,10 +85,10 @@ bool Song::operator==(Song const & rhs) const {
 
 
 //**********************************************************************//
-//Function: add_song(Song song)
-//Inputs:   song
-//Outputs:  void
-//Purpose:  To add a new song to the list.
+//Function: operator overload for ostream
+//  Inputs: operator and rhs argument
+// Outputs: none
+// Purpose: overload opertor for writing out
 //**********************************************************************//
 std::ostream & operator<<(std::ostream & lhs, Song const & rhs) {
     return lhs
@@ -97,10 +101,10 @@ std::ostream & operator<<(std::ostream & lhs, Song const & rhs) {
 
 
 //**********************************************************************//
-//Function:
-//Inputs:
-//Outputs:
-//Purpose: Parse song from input stream
+//Function: operator overload for istream
+//  Inputs: stream operator and song
+// Outputs: none
+// Purpose: Parse song from input stream
 //**********************************************************************//
 std::istream & operator>>(std::istream & stream, Song & song) {
     song.title = getline_allocated(stream, ';');

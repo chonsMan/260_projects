@@ -1,3 +1,9 @@
+//**********************************************************************//
+//   File: artist.cpp
+//Purpose: Contains functions that add an artist or a song; update an
+//         existing song; or deletes a song based on a minumum number
+//         of views.
+//**********************************************************************//
 #include "artist.hpp"
 #include "c_helpers.hpp"
 #include <iostream>
@@ -44,10 +50,17 @@ Artist::~Artist() {
     name = description = top_story = nullptr;
 }
 
+
+
+//**********************************************************************//
+//Function: cull
+//Inputs:   minimun number of views
+//Outputs:  void
+//Purpose:  Deletes songs that less than input number of views.
+//**********************************************************************//
 void Artist::cull(int minimum_views) {
     song_list.filter(
-        // [=] means pass captures by value
-        [=](Song const & song){
+        [=](Song const & song){ // [=] means pass captures by value
             return song.get_views() >= minimum_views;
         }
     );
@@ -88,7 +101,7 @@ void Artist::update_song(char const * song_title, int likes, int views) {
 //**********************************************************************//
 //Function: add_song(Song song)
 //Inputs:   song
-//Outputs:  void
+//Outputs:  Runtime error if song exists.
 //Purpose:  To add a new song to the list.
 //**********************************************************************//
 void Artist::add_song(Song * song) {
@@ -99,10 +112,10 @@ void Artist::add_song(Song * song) {
 
 
 //**********************************************************************//
-//Function:
-//Inputs:
-//Outputs:
-//Purpose:  Song factory.
+//Function: comparator operator overload
+//  Inputs: Right hand side of equivalency
+// Outputs: 0 if names are the same
+// Purpose: Compare input artist  to the artist list to find an artist.
 //**********************************************************************//
 bool Artist::operator==(Artist const & rhs) const {
     //return distance between different chars; zero if equal
@@ -112,10 +125,10 @@ bool Artist::operator==(Artist const & rhs) const {
 
 
 //**********************************************************************//
-//Function:
-//Inputs:
-//Outputs:
-//Purpose:  Song factory.
+//Function: ostream & operator
+//  Inputs: stream and artist
+//Outputs:  none
+//Purpose:  Used tyo stream artist information out to the user.
 //**********************************************************************//
 std::ostream & operator<<(std::ostream & stream, Artist const & artist) {
     return stream
@@ -129,19 +142,19 @@ std::ostream & operator<<(std::ostream & stream, Artist const & artist) {
 
 
 //**********************************************************************//
-//Function:
-//Inputs:
-//Outputs:
-//Purpose:
+//Function: istream operator
+//  Inputs: stram and artist
+// Outputs: none
+// Purpose: Used to read data in from a file.
 //**********************************************************************//
 std::istream & operator>>(std::istream & stream, Artist & artist) {
     stream.get(); // Consume '!'
-    artist.name = getline_allocated(stream, ';');
+    artist.name = getline_allocated(stream, ';'); //stream name and delimit the semi-colon
     artist.description = getline_allocated(stream, ';');
     artist.top_story = getline_allocated(stream, '\n');
 
-    while (stream.peek() != '!' && stream.peek() != -1) {
-        Song * song = new Song;
+    while (stream.peek() != '!' && stream.peek() != -1) {//while not at new artist and not at end
+        Song * song = new Song;//TODO: 
         stream >> *song;
         artist.add_song(song);
     }

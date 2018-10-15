@@ -1,5 +1,5 @@
 //**********************************************************************//
-//File: label.hpp
+//   File: label.hpp
 //Purpose: This serves as the top layer where the user will interact. It
 //		   houses functions that add an artist, update ad existing artist,
 //		   cull a song with less than a certain number of views, and

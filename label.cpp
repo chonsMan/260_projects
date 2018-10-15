@@ -74,7 +74,6 @@ void Label::cull(int minimum_views){
             artist.cull(minimum_views);
         }
     );
-
 }
 
 
