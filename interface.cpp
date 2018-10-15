@@ -24,7 +24,7 @@ void add_artist  (std::ostream & output, std::istream & input, Label & label){
     char * top_story = getline_allocated(input);
 
     try {
-        label.add_artist(artist, description, top_story);
+        label.add_artist(artist, description, top_story); //catch error if aritist does not exist
     } catch (std::runtime_error & err) {
         output << err.what() << '\n';
     }
@@ -36,9 +36,9 @@ void add_artist  (std::ostream & output, std::istream & input, Label & label){
 
 
 //**********************************************************************//
-//Function: add_song(Song song)
-//Inputs:   song
-//Outputs:  void
+//Function: add_song
+//Inputs:   Text from user
+//Outputs:  Text from user
 //Purpose:  To add a new song to the list.
 //**********************************************************************//
 void add_song(std::ostream & output, std::istream & input, Label & label){
@@ -60,7 +60,7 @@ void add_song(std::ostream & output, std::istream & input, Label & label){
     input.ignore();
   
     try {
-        label.add_song(artist, song, length, views, likes);
+        label.add_song(artist, song, length, views, likes); //catch error if artist does not exist
     } catch (std::runtime_error & err) {
         output << err.what() << std::endl;
     }
@@ -73,9 +73,9 @@ void add_song(std::ostream & output, std::istream & input, Label & label){
 
 //**********************************************************************//
 //Function: add_song(Song song)
-//Inputs:   song
-//Outputs:  void
-//Purpose:  To add a new song to the list.
+//Inputs:   Text from user
+//Outputs:  Text for user
+//Purpose:  Update song in list
 //**********************************************************************//
 void update_song (std::ostream & output, std::istream & input, Label & label){
     output << "Which artist?" << std::endl;;
@@ -92,7 +92,7 @@ void update_song (std::ostream & output, std::istream & input, Label & label){
     input.ignore();
   
     try {
-        label.update_song(artist, song, views, likes);
+        label.update_song(artist, song, views, likes); //catch error if aritist or song does not exist.
     } catch (std::runtime_error & err) {
         output << err.what() << std::endl;
     }
@@ -103,9 +103,9 @@ void update_song (std::ostream & output, std::istream & input, Label & label){
 
 
 //**********************************************************************//
-//Function: add_song(Song song)
-//Inputs:   song
-//Outputs:  void
+//Function: remove_songs
+//Inputs:   Text from user
+//Outputs:  Text for user
 //Purpose:  To add a new song to the list.
 //**********************************************************************//
 void remove_songs(std::ostream & output, std::istream & input, Label & label){
@@ -118,10 +118,10 @@ void remove_songs(std::ostream & output, std::istream & input, Label & label){
 
 
 //**********************************************************************//
-//Function: add_song(Song song)
-//Inputs:   song
-//Outputs:  void
-//Purpose:  To add a new song to the list.
+//Function: display
+//Inputs:   Text from user
+//Outputs:  Text for user
+//Purpose:  Display the list of the record label
 //**********************************************************************//
 void display(std::ostream & output, Label const & label) {
     output << label << std::endl;
@@ -130,10 +130,10 @@ void display(std::ostream & output, Label const & label) {
 
 
 //**********************************************************************//
-//Function: add_song(Song song)
-//Inputs:   song
-//Outputs:  void
-//Purpose:  To add a new song to the list.
+//Function: help
+//Inputs:   A '?' from the user
+//Outputs:  help list
+//Purpose:  Display to the user what each option does
 //**********************************************************************//
 void help(std::ostream & output){
     output 
@@ -147,10 +147,10 @@ void help(std::ostream & output){
 
 
 //**********************************************************************//
-//Function: add_song(Song song)
-//Inputs:   song
-//Outputs:  void
-//Purpose:  To add a new song to the list.
+//Function: interface_execute
+//Inputs:   Text from user, label
+//Outputs:  Text for user
+//Purpose:  Hols case statement for execution based on user input.
 //**********************************************************************//
 bool interface_execute(
     std::istream & input,
