@@ -1,6 +1,6 @@
-!The Beatles;Some guys from England;They did some stuff
-That Other Song;2.1;2000;3000
-Hard Day's Night;500.2;2;4
 !Eminem;rapper from Michigan;good rapper
-Rap God;4.2;123;456
 Lose Yourself;5;100;200
+Rap God;4.2;123;456
+!The Beatles;Some guys from England;They did some stuff
+Hard Day's Night;500.2;2;4
+That Other Song;2.1;2000;3000
