@@ -1,0 +1,9 @@
+Name: Jesse Harris
+
+Overall I think that the data structure was able to maintain, handle, and process the applciation very well. I was able to impliment all functionality and control was only processed at the top most layer, giving the user no view into what data structure was being used.
+
+I think that a vector would have worked better. Linked lists require a linear search. They are great at insert and delete operations; but so are vectors. Moreover, the linked list has to store the next and the previous nodes along with the data. As the program moves through the list in its search it maximizes the cache misses,which is exactly what should be avoided and what vectors avoid. There was, however, a portion of the code that pushed the new artist to the front of the list. In this case, it would have made sense to use a linked list had we been forced to push to the front; however, if a vector were used and we were not forced to do that, then we could simply add to the back of the list. Overall the cost of moving thorough half the memberss in a vector is much cheaper than moving trhough half the members of a linked list and is a more efficient approach.
+
+I think that my program was efficient in its use of functionality with error messages. I had not dealt with runtime error messages before, but this ultimately turned out to be an approach that worked well; however, I will mention that one downside of this was that the use was not able to see that the artist or song that they wanted to update was not in the list until they were finished entering all the information--a minor blemish. I also think that the implementation of typedefs was a great idea that allowed me to use a single node struct to traverse both of the lists. 
+
+If I had more time to solve the problem I would probably take more breaks. This assignment took me 40 hours. 
