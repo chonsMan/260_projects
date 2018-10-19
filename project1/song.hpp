@@ -38,7 +38,7 @@ struct Song {
     {}
 
     ~Song() {
-        if (title) delete title;
+        if (title) delete[] title;
     }
 
     bool operator==(Song const & rhs) const {
@@ -46,7 +46,7 @@ struct Song {
     }
 
     void operator=(Song && rhs) {
-        if (title) delete title;
+        if (title) delete[] title;
 
         title = rhs.title;
         length = rhs.length;

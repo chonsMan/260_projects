@@ -17,6 +17,9 @@ public:
     bool execute() {
         output << "Hello! [a,u,s,r,d,q,?]?" << std::endl;
         char * user_input = getline_allocated(input);
+
+        bool repeat { true };
+
         switch (user_input[0]) {
             case 'a':
                 add_artist();
@@ -37,13 +40,15 @@ public:
                 help();
                 break;
             case 'q': // quit
-                return false;
+                repeat = false;
+                break;
             default:
                 output << "Unrecognized command." << std::endl;;
         }
 
+        delete[] user_input;
         input.clear();
-        return true;
+        return repeat;
     }
 
 private:

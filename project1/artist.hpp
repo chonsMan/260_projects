@@ -42,9 +42,9 @@ public:
     Artist(char const * name) : name(strcpy_allocated(name)) {}
 
     ~Artist() {
-        if (name) delete name;
-        if (description) delete description;
-        if (top_story) delete top_story;
+        if (name) delete[] name;
+        if (description) delete[] description;
+        if (top_story) delete[] top_story;
     }
 
     void cull(int const minimum_views) {
