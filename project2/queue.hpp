@@ -4,17 +4,21 @@
 #include <utility>
 
 struct Queue{
-    Queue();//constructor
+    Queue() = default;//constructor
+    Queue(Queue const & queue) = delete;
+    Queue(Queue && queue);
     ~Queue();//destructor
     Queue & push(Group group); // Add to tail of list
-    Group const & peek();
+    bool is_empty(); // Check if queue is empty
+    Group const & peek(); // Peek head
     Group pop(); // Pop entire group by value
 
 private:
     struct Node{
-        Node(Group group, Queue::Node * next)
-            : group (std::move(group)), next(next) {}; // Constructor
+        Node(Group group)
+            : group (std::move(group)) {}; // Constructor
         Node(Node const & rhs) = delete;
+        Node(Node && node);
         ~Node() { // Destructor (recursive approach)
             if(!next) return; // No next pointer; exit
             delete next; //delete next pointer
@@ -27,8 +31,5 @@ private:
     Node 
         * head = nullptr,
         * tail = nullptr; 
-};// Struct
-
-
-
+}; // Struct
 #endif

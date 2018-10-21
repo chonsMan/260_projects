@@ -2,7 +2,7 @@ CXX=g++
 CXXFLAGS=-Wextra --std=c++17 -g
 EXE=restaurant
 
-LIBS=stack queue group contact_info
+LIBS=stack queue group contact_info steve victor
 all: $(EXE)
 
 $(EXE): main.cpp $(addsuffix .o, $(LIBS))

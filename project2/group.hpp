@@ -11,6 +11,7 @@ struct Group{
     );
     Group(Group const & group) = delete; // Don't make a copy
     Group(Group && group); // Mutable move constructor
+    ~Group();
 
 private:
     char const * name;
