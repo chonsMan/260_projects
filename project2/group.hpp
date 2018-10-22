@@ -1,23 +1,26 @@
 #ifndef GROUP_HPP
 #define GROUP_HPP
 #include "contact_info.hpp"
+#include "steve.hpp"
+#include <optional>
 
 struct Group{
     Group(
-        char const* name,
+        Steve name,
         int num_people,
-        char const * special_seating,
-        ContactInfo * contact_info // Manipulated w/ move contructor (not const)
+        Steve special_seating,
+        std::optional<ContactInfo> contact_info // Manipulated w/ move contructor (not const)
     );
     Group(Group const & group) = delete; // Don't make a copy
     Group(Group && group); // Mutable move constructor
-    ~Group();
+    // Group has value types and so nothing to delete
+    ~Group() = default;
 
 private:
-    char const * name;
+    Steve name;
     int num_people;
-    char const * special_seating;
-    ContactInfo const * contact_info;
+    Steve special_seating;
+    std::optional<ContactInfo> contact_info;
 };
 
 

@@ -1,16 +1,17 @@
 #ifndef STEVE_HPP
 #define STEVE_HPP
 #include<cstring>
+#include "victor.hpp"
 
-struct Steve {
+// The ":" States Steve is inheriting from Victor of char (Steve is a type of Victor)
+struct Steve : public Victor<char>{
     Steve() = default;
-    // Copy is default b/c it will just copy over Victor
-    Steve(Steve const & rhs) = default;
+    Steve(size_t reserved);
+    Steve(char const * rhs);
+    Steve(Steve const & rhs);
     Steve(Steve && rhs);
-    // Victor goes out of scope and will call its own destructor
+    // Parent destructors are called automatically
     ~Steve() = default;
-private:
-    Victor victor;
-}
+};
 
 #endif
