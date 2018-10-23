@@ -1,5 +1,7 @@
 #include "victor.hpp"
+#include "contact_info.hpp"
 #include <algorithm>
+#include <stdexcept>
 
 
 // user should be able to set capacity
@@ -20,7 +22,7 @@ Victor<Item>::Victor(Victor<Item> const & rhs) :
             &rhs.vodka[0],
             &rhs.vodka[rhs.size],
             &vodka[0]
-        )
+        );
     }
 }
 
@@ -45,7 +47,7 @@ Victor<Item>::~Victor(){
 
 
 template <typename Item>
-Victor<Item> & Victor<Item>::push(Item value) {
+void Victor<Item>::push(Item value) {
     guarantee_space();
     vodka[size] = std::move(value);
     size++;
@@ -97,7 +99,7 @@ void Victor<Item>::resize(size_t requested) {
             &prev[0],
             &prev[size], // Goes off end of array (last is [size - 1])
             &vodka[0] // Pointer to the first element of the destination
-        )
+        );
     }
 
     // Get rid of old array now that all vodka has been taken out

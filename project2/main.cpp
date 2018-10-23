@@ -1,6 +1,11 @@
+#include "steve.hpp"
+#include <iostream>
 
 
+int main(){
+    Steve
+        a {"Hello"},
+        b {"world"};
 
-void main(){
-
+    std::cout << a << ' ' << b << std::endl;
 }

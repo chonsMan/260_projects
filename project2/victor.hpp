@@ -10,7 +10,7 @@ struct Victor{
     Victor(Victor && rhs);
     ~Victor();
 
-    Victor & push(Item value); // Provide a fluent API
+    void push(Item value); // Provide a fluent API
     Item pop();
     Item & operator[](size_t);
 

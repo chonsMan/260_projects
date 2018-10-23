@@ -47,7 +47,7 @@ Group Queue::pop(){
     // Remove list from node
     popped->next = nullptr;
     // Get value
-    Group group{ std::move(popped->group };
+    Group group{ std::move(popped->group) };
     delete popped;
     return group;
 }
