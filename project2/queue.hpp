@@ -13,6 +13,11 @@ struct Queue{
     Group const & peek(); // Peek head
     Group pop(); // Pop entire group by value
 
+    friend std::ostream & operator<<(
+        std::ostream & output,
+        Queue const & rhs 
+    );  
+
 private:
     struct Node{
         Node(Group group)

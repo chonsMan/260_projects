@@ -23,3 +23,19 @@ Group::Group(Group && rhs) :
 {
     rhs.num_people = 0;
 }
+
+
+std::optional<ContactInfo> & Group::get_contact_info () {
+    return contact_info;
+}
+
+
+std::ostream & operator<<(
+    std::ostream & output,
+    Group const & rhs 
+) {
+    return output
+        << rhs.name << '\n'
+        << rhs.num_people << '\n'
+        << rhs.special_seating << std::endl;
+}

@@ -16,6 +16,13 @@ struct Group{
     // Group has value types and so nothing to delete
     ~Group() = default;
 
+    std::optional<ContactInfo> & get_contact_info ();
+
+    friend std::ostream & operator<<(
+        std::ostream & output,
+        Group const & rhs 
+    );
+
 private:
     Steve name;
     int num_people;

@@ -14,7 +14,7 @@ $(EXE): main.cpp $(addsuffix .o, $(LIBS))
 .PHONY: clean run
 
 clean:
-	rm -f $(LIBS) $(EXE)
+	rm -f $(addsuffix .o, $(LIBS)) $(EXE)
 
 run: $(EXE)
-	$(EXE)
+	./$(EXE)

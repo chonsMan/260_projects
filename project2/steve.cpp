@@ -26,6 +26,40 @@ Steve::Steve(Steve && rhs) : Victor(std::move(rhs)) {}
 
 
 
+char const * Steve::c_str(){ return vodka; }
+
+
+
 std::ostream & operator<<(std::ostream & lhs, Steve const & rhs){
     return lhs << rhs.vodka;
+}
+
+
+// Flush old stuff out and bring new in
+Steve & Steve::operator=(char const * rhs){
+    size_t length = strlen(rhs) + 1; //Get length of string
+    size = capacity = length;
+    delete[] reallocate(); // Delete old array
+    strcpy(vodka, rhs); // Copy rhs into vodka
+    return *this;
+}
+
+
+Steve & Steve::operator=(Steve const & rhs){
+    size = rhs.size;
+    capacity = rhs.capacity;
+    delete[] reallocate();
+    if (size > 0) strcpy(vodka, rhs.vodka);
+    return *this;
+}
+
+
+Steve & Steve::operator=(Steve && rhs){
+    delete[] vodka;
+    vodka = rhs.vodka;
+    size = rhs.size;
+    capacity = rhs.capacity;
+    rhs.vodka = nullptr;
+    rhs.size = rhs.capacity = 0;
+    return *this;
 }

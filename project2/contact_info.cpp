@@ -10,11 +10,25 @@ ContactInfo::ContactInfo(ContactInfo && rhs) :
 {}
 
 ContactInfo & ContactInfo::operator=(ContactInfo const & rhs) {
-    name = name;
-    email = email;
+    name = rhs.name;
+    email = rhs.email;
+    return *this;
 }
 
 ContactInfo & ContactInfo::operator=(ContactInfo && rhs) {
-    name = std::move(name);
-    email = std::move(email);
+    name = std::move(rhs.name);
+    email = std::move(rhs.email);
+    return *this;
 }
+
+
+
+std::ostream & operator<<(
+    std::ostream & output,
+    ContactInfo const & rhs
+) {
+    return output 
+    << rhs.name << '\n'
+    << rhs.email << std::endl;
+}
+

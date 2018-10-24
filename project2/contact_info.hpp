@@ -12,6 +12,11 @@ struct ContactInfo{
     ContactInfo & operator=(ContactInfo const & rhs);
     ContactInfo & operator=(ContactInfo && rhs);
 
+    friend std::ostream & operator<<(
+        std::ostream & output,
+        ContactInfo const & rhs
+    );
+
 private:
     Steve name, email;
 };

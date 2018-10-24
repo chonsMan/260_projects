@@ -51,3 +51,19 @@ Group Queue::pop(){
     delete popped;
     return group;
 }
+
+
+
+std::ostream & operator<<(
+    std::ostream & output,
+    Queue const & rhs 
+) {
+    Queue::Node * iter = rhs.head;
+
+    do {
+        output << iter->group;
+        iter = iter->next;
+    } while(iter != rhs.head);
+
+    return output;
+}

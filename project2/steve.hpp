@@ -15,8 +15,14 @@ struct Steve : public Victor<char>{
     // Parent destructors are called automatically
     ~Steve() = default;
 
+    char const * c_str();
+
+    Steve & operator=(char const * rhs);
+    Steve & operator=(Steve const & rhs);
+    Steve & operator=(Steve && rhs);
 
     friend std::ostream & operator<<(std::ostream & lhs, Steve const & rhs);
+    friend std::istream & getline(std::istream & lhs, Steve & rhs, char delim);
 };
 
 #endif
