@@ -3,10 +3,9 @@
 //   File: interface.cpp
 //Purpose: Allows top level interaction from user for adding an artist, 
 //         adding a song, updating a song, removing a song, displaying
-//         the label, and removing songs.
+//         the restaurant, and removing songs.
 //**********************************************************************//
 #include "interface.hpp"
-#include "c_helpers.hpp"
 
 
 //**********************************************************************//
@@ -15,118 +14,40 @@
 //Outputs:  Text for user
 //Purpose:  Allows for addition of artist, description, and top story.
 //**********************************************************************//
-void add_artist  (std::ostream & output, std::istream & input, Label & label){
-    output << "What is the name of the artist?" << std::endl;;
-    char * artist = getline_allocated(input);
-    output << "What is the description" << std::endl;;
-    char * description = getline_allocated(input);
-    output << "What is the top story?" << std::endl;;
-    char * top_story = getline_allocated(input);
+void add_group  (
+    std::ostream & output, 
+    std::istream & input, 
+    Restaurant & restaurant
+) {
+    output << "What is the name of the party?" << std::endl;;
+    Steve name;
+    getline(input, name, '\n');
 
-    try {
-        label.add_artist(artist, description, top_story); //catch error if aritist does not exist
-    } catch (std::runtime_error & err) {
-        output << err.what() << '\n';
-    }
+    output << "How many are in the party?" << std::endl;
+    int members;
+    input >> members;
+    input.ignore();
 
-    delete[] artist; //delete entire artist; not just what the pointer points to 
-    delete[] description;
-    delete[] top_story;
+    output << "What special seating do you require? If none, press enter!" << std::endl;
+    Steve special_seating;
+    getline(input, special_seating, '\n');
+    output << "Enter an email if you would like to be contacted for promos." << std::endl;
+    Steve email;
+    getline(input, email, '\n');
+
+    std::optional<ContactInfo> spam {
+        email.is_empty()
+            ? std::nullopt
+            : std::make_optional(ContactInfo { name, std::move(email) })
+    };
+
+    restaurant.add_group(
+        std::move(name), 
+        members, 
+        std::move(special_seating),
+        std::move(spam)
+    );
 }
-
-
-//**********************************************************************//
-//Function: add_song
-//Inputs:   Text from user
-//Outputs:  Text from user
-//Purpose:  To add a new song to the list.
-//**********************************************************************//
-void add_song(std::ostream & output, std::istream & input, Label & label){
-    output << "Which artist?" << std::endl;;
-    char * artist = getline_allocated(input);
-    output << "What song would you like to add?" << std::endl;;
-    char * song = getline_allocated(input);
-    output << "How long is the song?" << std::endl;;
-    float length;
-    input >> length;
-    input.ignore();
-    output << "How many views?" << std::endl;;
-    int views;
-    input >> views;
-    input.ignore();
-    output << "How many likes?" << std::endl;
-    int likes;
-    input >> likes;
-    input.ignore();
-  
-    try {
-        label.add_song(artist, song, length, views, likes); //catch error if artist does not exist
-    } catch (std::runtime_error & err) {
-        output << err.what() << std::endl;
-    }
-
-    delete[] song; 
-    delete[] artist; //delete entire artist; not just what the pointer points to 
-
-}
-
-
-//**********************************************************************//
-//Function: add_song(Song song)
-//Inputs:   Text from user
-//Outputs:  Text for user
-//Purpose:  Update song in list
-//**********************************************************************//
-void update_song (std::ostream & output, std::istream & input, Label & label){
-    output << "Which artist?" << std::endl;;
-    char * artist = getline_allocated(input);
-    output << "Which song?" << std::endl;;
-    char * song = getline_allocated(input);
-    output << "How many views?" << std::endl;;
-    int views;
-    input >> views;
-    input.ignore();
-    output << "How many likes?" << std::endl;
-    int likes;
-    input >> likes;
-    input.ignore();
-  
-    try {
-        label.update_song(artist, song, views, likes); //catch error if aritist or song does not exist.
-    } catch (std::runtime_error & err) {
-        output << err.what() << std::endl;
-    }
-
-    delete[] song; 
-    delete[] artist; //delete entire artist; not just what the pointer points to 
-}
-
-
-//**********************************************************************//
-//Function: remove_songs
-//Inputs:   Text from user
-//Outputs:  Text for user
-//Purpose:  To add a new song to the list.
-//**********************************************************************//
-void remove_songs(std::ostream & output, std::istream & input, Label & label){
-    output << "What are the minimum number of views?" << std::endl;
-    int min;
-    input >> min;
-    input.ignore();
-    label.cull(min); 
-}
-
-
-//**********************************************************************//
-//Function: display
-//Inputs:   Text from user
-//Outputs:  Text for user
-//Purpose:  Display the list of the record label
-//**********************************************************************//
-void display(std::ostream & output, Label const & label) {
-    output << label << std::endl;
-}
-
 
 
 //**********************************************************************//
@@ -137,44 +58,53 @@ void display(std::ostream & output, Label const & label) {
 //**********************************************************************//
 void help(std::ostream & output){
     output 
-        << "a = add artist\n" 
-        << "u = update song\n"
-        << "s = add song\n"
-        << "r = remove songs\n"
-        << "d = display list\n"
+        << "a = add a group\n" 
+        << "s = seat a group\n"
+        << "v = view next group\n"
+        << "f = spam groups\n"
+        << "d = display groups\n"
         << "q = quit program" << std::endl;
 }
 
 
 //**********************************************************************//
 //Function: interface_execute
-//Inputs:   Text from user, label
+//Inputs:   Text from user, restaurant
 //Outputs:  Text for user
 //Purpose:  Hols case statement for execution based on user input.
 //**********************************************************************//
 bool interface_execute(
     std::istream & input,
     std::ostream & output,
-    Label & label
+    Restaurant & restaurant
 ) {
     //Give user option for input. Devlop case statement for user option.
-    output << "Hello! [a,u,s,r,d,q,?]?" << std::endl;
-    char * user_input = getline_allocated(input);
+    output << "Hello! [a,s,v,f,d,q,? (for help)]?" << std::endl;
+    Steve user_input;
+    getline(input, user_input, '\n');
     switch (user_input[0]) {
         case 'a':
-            add_artist(output, input, label);
-            break;
-        case 'u':
-            update_song(output, input, label);
+            add_group(output, input, restaurant);
             break;
         case 's':
-            add_song(output, input, label);
+            try {
+                restaurant.seat_group();
+            } catch(std::length_error & _) {
+                output << "There are no more groups to seat." << std::endl;
+            }
             break;
-        case 'r':
-            remove_songs(output, input, label);
+        case 'v':
+            try {
+                restaurant.next_group(output);
+            } catch (std::length_error &_) {
+                output << "There are no groups." << std::endl;
+            }
+            break;
+        case 'f':
+            restaurant.spam(output);
             break;
         case 'd':
-            display(output, label);
+            output << restaurant;
             break;
         case '?':
             help(output);

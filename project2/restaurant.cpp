@@ -44,11 +44,10 @@ void Restaurant::next_group(std::ostream & output) {
 
 
 
-void Restaurant::spam(std::ostream output) {
+void Restaurant::spam(std::ostream & output) {
     ContactInfo info { contacts.pop() };
     output << info;
-    std::ofstream outfile;
-    outfile.open(file_name.c_str());
+    std::ofstream outfile { file_name.c_str(), std::ios_base::app };
     outfile << info;
 }   
 

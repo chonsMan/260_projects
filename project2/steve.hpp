@@ -3,6 +3,7 @@
 #include<cstring>
 #include<iostream>
 #include "victor.hpp"
+#include <utility>
 
 
 // The ":" States Steve is inheriting from Victor of char (Steve is a type of Victor)
@@ -16,6 +17,9 @@ struct Steve : public Victor<char>{
     ~Steve() = default;
 
     char const * c_str();
+    void reserve(size_t cap);
+    bool is_empty() const;
+    void clear();
 
     Steve & operator=(char const * rhs);
     Steve & operator=(Steve const & rhs);

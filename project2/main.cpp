@@ -1,11 +1,12 @@
 #include "steve.hpp"
+#include "restaurant.hpp"
+#include "interface.hpp"
 #include <iostream>
 
 
 int main(){
-    Steve
-        a {"Hello"},
-        b {"world"};
-
-    std::cout << a << ' ' << b << std::endl;
+    Restaurant restaurant { "Outfile" };
+    while(
+    interface_execute(std::cin, std::cout, restaurant)
+    );
 }

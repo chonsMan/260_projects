@@ -1,3 +1,5 @@
+#ifndef RESTAURANT_HPP
+#define RESTAURANT_HPP
 #include "queue.hpp"
 #include "stack.hpp"
 #include "steve.hpp"
@@ -5,7 +7,7 @@
 
 struct Restaurant {
     Restaurant(Steve file_name);
-    ~Restaurant();
+    ~Restaurant() = default;
 
     // Add group
     void add_group(
@@ -19,7 +21,7 @@ struct Restaurant {
     // See next group
     void next_group(std::ostream & output);
     // Spam a group
-    void spam(std::ostream output);
+    void spam(std::ostream & output);
 
     friend std::ostream & operator<<(
         std::ostream & output,
@@ -32,3 +34,5 @@ private:
 
     Steve file_name;
 };
+
+#endif

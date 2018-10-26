@@ -1,6 +1,5 @@
 #include "steve.hpp"
-#include <utility>
-
+#include <stdexcept>
 
 Steve::Steve(size_t reserved) : Victor(reserved) {}
 
@@ -28,7 +27,27 @@ Steve::Steve(Steve && rhs) : Victor(std::move(rhs)) {}
 
 char const * Steve::c_str(){ return vodka; }
 
+void Steve::reserve(size_t cap){
+    if (cap < size){
+        throw std::length_error ("Capacity is too small.");
+    }
 
+    resize(cap);
+}
+
+
+
+
+bool Steve::is_empty() const {
+    return size == 0 || vodka[0] == '\0';
+}
+
+
+void Steve::clear() {
+    if(vodka) delete[] vodka;
+    vodka = nullptr;
+    size = capacity = 0;
+}
 
 std::ostream & operator<<(std::ostream & lhs, Steve const & rhs){
     return lhs << rhs.vodka;
@@ -62,4 +81,22 @@ Steve & Steve::operator=(Steve && rhs){
     rhs.vodka = nullptr;
     rhs.size = rhs.capacity = 0;
     return *this;
+}
+
+
+
+static size_t const READ_BUFF_LEN = 512;
+std::istream & getline(
+    std::istream & lhs, 
+    Steve & rhs, 
+    char delim
+) {
+    rhs.clear();
+    rhs.reserve(READ_BUFF_LEN);
+    char got;
+    while ((got = lhs.get()) != delim) {
+        rhs.push(got);
+    }
+    rhs.push('\0');
+    return lhs;
 }

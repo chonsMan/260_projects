@@ -33,9 +33,14 @@ std::optional<ContactInfo> & Group::get_contact_info () {
 std::ostream & operator<<(
     std::ostream & output,
     Group const & rhs 
-) {
-    return output
-        << rhs.name << '\n'
-        << rhs.num_people << '\n'
-        << rhs.special_seating << std::endl;
+) { 
+
+output
+    << rhs.name << '\n'
+    << "Number of people: " << rhs.num_people << '\n';
+
+if (!rhs.special_seating.is_empty())
+    output << "Special seating: " << rhs.special_seating << '\n';
+
+return output;
 }

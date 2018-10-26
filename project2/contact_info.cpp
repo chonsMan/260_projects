@@ -27,8 +27,8 @@ std::ostream & operator<<(
     std::ostream & output,
     ContactInfo const & rhs
 ) {
-    return output 
-    << rhs.name << '\n'
+    return output
+    << rhs.name << ":  "
     << rhs.email << std::endl;
 }
 

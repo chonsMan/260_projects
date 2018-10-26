@@ -42,8 +42,10 @@ Group Queue::pop(){
     // Remove node from list
     if(head == tail)
         head = tail = nullptr;
-    else
+    else {
         head = head->next;
+        tail->next = head;
+    }
     // Remove list from node
     popped->next = nullptr;
     // Get value
@@ -59,10 +61,13 @@ std::ostream & operator<<(
     Queue const & rhs 
 ) {
     Queue::Node * iter = rhs.head;
+    if (iter == nullptr) return output;
+    int i = 1;
 
     do {
-        output << iter->group;
+        output << "Group " << i << ": " << iter->group;
         iter = iter->next;
+        i++;
     } while(iter != rhs.head);
 
     return output;
