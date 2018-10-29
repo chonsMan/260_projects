@@ -18,4 +18,4 @@ struct Stack : public Victor<ContactInfo> {
 };
 
 
-#endif
+#endif 

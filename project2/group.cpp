@@ -1,7 +1,11 @@
+//File: group.cpp
+//Purpose: To build a group that will be added to a waiting list
+
+
 #include "group.hpp"
 #include <utility>
 
-
+//Constructor
 Group::Group(
     Steve name,
     int num_people,
@@ -14,7 +18,7 @@ Group::Group(
     contact_info{std::move(contact_info)}
 {}
 
-
+//Move Constructor
 Group::Group(Group && rhs) : 
     name{std::move(rhs.name)}, 
     num_people{rhs.num_people}, 
@@ -25,11 +29,15 @@ Group::Group(Group && rhs) :
 }
 
 
+//Inputs: none
+//Outputs: contact information
+//Purpose: To return the contact information if a group wanted to be part of promo list
 std::optional<ContactInfo> & Group::get_contact_info () {
     return contact_info;
 }
 
 
+//Operator overload for '<<' operator
 std::ostream & operator<<(
     std::ostream & output,
     Group const & rhs 

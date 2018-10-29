@@ -1,3 +1,6 @@
+//File: steve.cpp
+//Purpose: I made my own string class!
+
 #include "steve.hpp"
 #include <stdexcept>
 
@@ -22,6 +25,7 @@ Steve::Steve(Steve const & rhs) : Victor(rhs) {}
 // Call move constructor for Victor. This will initialize the current object
 // using the move constructor for the parent object.
 Steve::Steve(Steve && rhs) : Victor(std::move(rhs)) {}
+
 
 
 

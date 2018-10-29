@@ -1,19 +1,17 @@
 
 //**********************************************************************//
 //   File: interface.cpp
-//Purpose: Allows top level interaction from user for adding an artist, 
-//         adding a song, updating a song, removing a song, displaying
-//         the restaurant, and removing songs.
+//Purpose: Allows top level interaction from user
 //**********************************************************************//
 #include "interface.hpp"
 
 
-//**********************************************************************//
-//Function: add_artist
+
+//Function: add_group
 //Inputs:   Text from user
 //Outputs:  Text for user
-//Purpose:  Allows for addition of artist, description, and top story.
-//**********************************************************************//
+//Purpose:  Adds a group to the waiting list
+
 void add_group  (
     std::ostream & output, 
     std::istream & input, 
@@ -50,12 +48,11 @@ void add_group  (
 }
 
 
-//**********************************************************************//
+
 //Function: help
 //Inputs:   A '?' from the user
 //Outputs:  help list
 //Purpose:  Display to the user what each option does
-//**********************************************************************//
 void help(std::ostream & output){
     output 
         << "a = add a group\n" 
