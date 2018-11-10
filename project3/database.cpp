@@ -1,4 +1,5 @@
 #include "database.hpp"
+#include "hash_table.hpp"
 #include <utility>
 #include <stdexcept>
 
@@ -36,4 +37,40 @@ void Database::edit(
 
     topic->review = review;
     topic->rating = rating;
+}
+
+
+
+void print_topic_victor(std::ostream & output, Victor<Topic> & source) {
+    for (int i = 0; i < source.get_size(); i++) {
+        Topic const & topic = source[i];
+        output << topic << '\n';
+    }
+}
+
+
+
+void Database::display(std::ostream & output, Steve const & keyword) {
+    print_topic_victor(output, hash_table[keyword]);
+}
+
+
+
+void Database::display_all(std::ostream & output) {
+    // printer is funfaction
+    auto printer = [&](Victor<Topic> & source){ print_topic_victor(output, source); };
+    hash_table.for_each(printer);
+}
+
+
+
+void Database::remove() {
+    auto predicate = [](Topic const & topic){
+        return topic.rating != ONE;
+    }; 
+
+    auto culler = [=](Victor<Topic> & topics){ 
+        topics.filter(predicate);
+    };
+    hash_table.for_each(culler);
 }

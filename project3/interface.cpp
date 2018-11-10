@@ -6,47 +6,78 @@
 #include "interface.hpp"
 
 
+Steve prompt(
+    std::ostream & output, 
+    std::istream & input, 
+    char const * message
+) {
+    output << message << std::endl;
+    Steve response;
+    getline(input, response, '\n');
+    return response;
+}
 
 //Function: add_group
 //Inputs:   Text from user
 //Outputs:  Text for user
 //Purpose:  Adds a group to the waiting list
 
-void add_group  (
+void add_topic  (
     std::ostream & output, 
     std::istream & input, 
-    Restaurant & restaurant
+    Database & database
 ) {
-    output << "What is the name of the party?" << std::endl;;
-    Steve name;
-    getline(input, name, '\n');
+    Steve keyword = prompt(output, input, "What keyword does this correspond to?");
+    Steve name = prompt(output, input, "What is the name of the Topic?");
+    Steve website_address = prompt(output, input, "What is the website?";
+    Steve summary = prompt(output, input, "Please enter a summary");
+    Steve review = prompt(output, input, "Please enter a review.";
+    Steve rating = prompt(output, input, "Enter a rating (ONE, TWO, THREE, FOUR, FIVE).");
 
-    output << "How many are in the party?" << std::endl;
-    int members;
-    input >> members;
-    input.ignore();
-
-    output << "What special seating do you require? If none, press enter!" << std::endl;
-    Steve special_seating;
-    getline(input, special_seating, '\n');
-    output << "Enter an email if you would like to be contacted for promos." << std::endl;
-    Steve email;
-    getline(input, email, '\n');
-
-    std::optional<ContactInfo> spam {
-        email.is_empty()
-            ? std::nullopt
-            : std::make_optional(ContactInfo { name, std::move(email) })
-    };
-
-    restaurant.add_group(
-        std::move(name), 
-        members, 
-        std::move(special_seating),
-        std::move(spam)
+    database.insert(
+        std::move(keyword), 
+        Topic { 
+            std::move(name),
+            std::move(website_address),
+            std::move(summary),
+            std::move(review),
+            rating_from_steve(rating)
+        }
     );
+
 }
 
+void edit (
+    std::ostream & output, 
+    std::istream & input, 
+    Database & database
+) {
+    Steve hash_key = prompt(output, input, "Please enter a topic.");
+    Steve website = prompt(output, input, "Please enter a website."); 
+    Steve review = prompt(output, input, "Please enter a review.");
+    Steve rating = prompt(output, input, "Enter a rating (ONE, TWO, THREE, FOUR, FIVE).");
+
+    database.edit(hash_key, website, std::move(review), rating_from_steve(rating));
+}
+
+
+
+void retrieve(
+    std::ostream output, 
+    std::istream input,
+    Database & database
+) {
+    output << "Enter keyword." << std::endl;
+    Steve hash_key;
+    getline(input, hash_key, '\n');
+
+    Victor<Steve> websites = database.retrieve(hash_key);
+
+    for (size_t i{0}; i < websites.get_size(); i++) {
+        output << websites[i] << '\n';
+    }
+    output.flush();
+}
 
 
 //Function: help
@@ -55,11 +86,12 @@ void add_group  (
 //Purpose:  Display to the user what each option does
 void help(std::ostream & output){
     output 
-        << "a = add a group\n" 
-        << "s = seat a group\n"
-        << "v = view next group\n"
-        << "f = spam groups\n"
-        << "d = display groups\n"
+        << "a = add a topic\n" 
+        << "e = edit\n"
+        << "r = retrieve all websites for given topic\n"
+        << "f = remove all 1 star ratings\n"
+        << "d = display groups within given topic\n"
+        << "s = display all groups\n"
         << "q = quit program" << std::endl;
 }
 
@@ -73,10 +105,10 @@ void help(std::ostream & output){
 bool interface_execute(
     std::istream & input,
     std::ostream & output,
-    Restaurant & restaurant
+    Database & database
 ) {
     //Give user option for input. Devlop case statement for user option.
-    output << "Hello! [a,s,v,f,d,q,? (for help)]?" << std::endl;
+    output << "Hello! [a,e,r,f,d,s,q,? (for help)]?" << std::endl;
     Steve user_input;
     getline(input, user_input, '\n');
     switch (user_input[0]) {

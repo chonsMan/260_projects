@@ -29,8 +29,11 @@ struct HashTable{
 
 
     void for_each(std::function<void (Value &)> funfaction) {
-        for(i{0}; i < storage.get_size(); i++) {
-            storage[i].for_each(funfaction);
+        // Adapter will call funfaction on the value
+        // It will *capture* funfaction
+        auto adapter = [&](Entry & entry) { funfaction(entry.value); };
+        for(size_t i{0}; i < storage.get_size(); i++) {
+            storage[i].for_each(adapter); // Return each linked list at each bucket; call for_each
         }
     }
 

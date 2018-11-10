@@ -8,7 +8,17 @@ enum Rating {
     ONE, TWO, THREE, FOUR, FIVE
 };
 
-char const * display_rating(Rating rating) {
+Rating rating_from_steve(Steve const & steve) {
+    if(steve == "ONE"  ) return ONE;
+    if(steve == "TWO"  ) return TWO;
+    if(steve == "THREE") return THREE;
+    if(steve == "FOUR" ) return FOUR;
+    if(steve == "FIVE" ) return FIVE;
+    throw std::runtime_error("not what I asked");
+}
+
+
+inline char const * display_rating(Rating rating) {
     switch (rating) {
         case   ONE: return "🌟";
         case   TWO: return "🌟🌟";
@@ -19,6 +29,25 @@ char const * display_rating(Rating rating) {
 }
 
 struct Topic {
+    Topic() = default;
+
+    // Constructor
+    Topic(    
+        Steve topic_name,
+        Steve website_address,
+        Steve summary,
+        Steve review,
+        Rating rating
+    ) : 
+        topic_name { std::move(topic_name) },
+        website_address { std::move(website_address) },
+        summary { std::move(summary) },
+        review { std::move(review) },
+        rating { rating }
+    {}
+
+        
+
     Topic(Topic && rhs) : 
         topic_name { std::move(rhs.topic_name) },
         website_address { std::move(rhs.website_address) },
@@ -42,5 +71,16 @@ struct Topic {
         return *this;
     }
 };
+
+
+
+inline std::ostream & operator<<(std::ostream & lhs, Topic const & rhs) {
+    // Evaluate to a reference to lhs
+    return lhs << "Topic name: " << rhs.topic_name << '\n'
+        << "Website: " << rhs.website_address << '\n'
+        << "Summary: " << rhs.summary << '\n'
+        << "Review: " << rhs.review << '\n'
+        << "Rating: " << display_rating(rhs.rating) << '\n';
+}
 
 #endif

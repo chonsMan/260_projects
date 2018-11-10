@@ -6,13 +6,13 @@
 #ifndef INTERFACE_HPP                                                                
 #define INTERFACE_HPP                                                                
                                                                                      
-#include "restaurant.hpp"                                                                 
+#include "database.hpp"                                                                 
 #include <iostream>                                                                  
                                                                                      
 bool interface_execute(
     std::istream & input, 
     std::ostream & output, 
-    Restaurant & restaurant
+    Database & database
 );                  
                                                                                      
 #endif 

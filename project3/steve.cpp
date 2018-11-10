@@ -28,7 +28,6 @@ Steve::Steve(Steve && rhs) : Victor(std::move(rhs)) {}
 
 
 
-
 char const * Steve::c_str() const { return vodka; }
 
 void Steve::reserve(size_t cap){
@@ -47,15 +46,19 @@ bool Steve::is_empty() const {
 }
 
 
+
 void Steve::clear() {
     if(vodka) delete[] vodka;
     vodka = nullptr;
     size = capacity = 0;
 }
 
+
+
 std::ostream & operator<<(std::ostream & lhs, Steve const & rhs){
     return lhs << rhs.vodka;
 }
+
 
 
 // Flush old stuff out and bring new in
@@ -68,6 +71,7 @@ Steve & Steve::operator=(char const * rhs){
 }
 
 
+
 Steve & Steve::operator=(Steve const & rhs){
     size = rhs.size;
     capacity = rhs.capacity;
@@ -75,6 +79,7 @@ Steve & Steve::operator=(Steve const & rhs){
     if (size > 0) strcpy(vodka, rhs.vodka);
     return *this;
 }
+
 
 
 Steve & Steve::operator=(Steve && rhs){
@@ -85,6 +90,12 @@ Steve & Steve::operator=(Steve && rhs){
     rhs.vodka = nullptr;
     rhs.size = rhs.capacity = 0;
     return *this;
+}
+
+
+
+bool Steve::operator==(char const * rhs) const{
+    return(strcmp(vodka, rhs) == 0);
 }
 
 

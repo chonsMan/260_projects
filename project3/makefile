@@ -1,8 +1,8 @@
 CXX=clang++
 CXXFLAGS=-Wpedantic --std=c++17 -g
-EXE=hash_table
+EXE=Websites
 
-LIBS=steve hasher
+LIBS=steve hasher database
 all: $(EXE)
 
 $(EXE): main.cpp $(addsuffix .o, $(LIBS))
